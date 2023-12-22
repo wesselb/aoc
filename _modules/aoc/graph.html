@@ -331,6 +331,8 @@ document.write(`
     <span class="n">start</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
     <span class="n">nbs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
     <span class="n">callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">heuristic</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">revisit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dijkstra&#39;s algorithm to compute all shortest paths starting at `start`.</span>
 
@@ -344,6 +346,13 @@ document.write(`
 <span class="sd">            every iteration with the current node and the true shortest path distance to</span>
 <span class="sd">            that node. If this function returns `True`, the algorithm will stop.</span>
 <span class="sd">            Otherwise, the algorithm will continue.</span>
+<span class="sd">        heuristic (Callable[[Node], float], optional): An heuristic that needs to lower</span>
+<span class="sd">            bounds the distance to the end node. It should also be monotonic, meaning</span>
+<span class="sd">            that it never decreases by more than the edge weight. If it is not</span>
+<span class="sd">            monotonic, you should set `revisit` to `True` to still find the optimal</span>
+<span class="sd">            path.</span>
+<span class="sd">        revisit (bool, optional): Allow the algorithm to revisit the same node</span>
+<span class="sd">            arbitrarily many times instead of just once. Defaults to `False`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[dict[Node, float], dict[Node, Node]]:</span>
@@ -356,7 +365,7 @@ document.write(`
     <span class="n">seen</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="n">q</span><span class="p">:</span> <span class="n">Queue</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">()</span>
-    <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">start</span><span class="p">))</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">heuristic</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">start</span><span class="p">))</span>
 
     <span class="k">while</span> <span class="ow">not</span> <span class="n">q</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
         <span class="n">d1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -364,7 +373,8 @@ document.write(`
         <span class="c1"># This needs to execute first to ensure that `d1` is right.</span>
         <span class="k">if</span> <span class="n">n1</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">revisit</span><span class="p">:</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">callback</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
             <span class="k">break</span>
@@ -379,7 +389,7 @@ document.write(`
             <span class="k">if</span> <span class="n">alt</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)):</span>
                 <span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt</span>
                 <span class="n">prev</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">=</span> <span class="n">n1</span>
-                <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">],</span> <span class="n">n2</span><span class="p">))</span>
+                <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">+</span> <span class="n">heuristic</span><span class="p">(</span><span class="n">n2</span><span class="p">),</span> <span class="n">n2</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">prev</span></div>
 </pre></div>
