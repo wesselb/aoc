@@ -1,7 +1,17 @@
 Application Programming Interface
 =================================
 
-Core
+IO
+--
+.. automodule:: aoc.io
+    :members:
+
+Board
 -----
-.. automodule:: aoc.core
+.. automodule:: aoc.board
+    :members:
+
+Graph
+-----
+.. automodule:: aoc.graph
     :members:

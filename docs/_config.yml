@@ -22,9 +22,9 @@ latex:
 # Load AutoDoc extension.
 sphinx:
   extra_extensions:
-  - 'sphinx.ext.autodoc'
-  - 'sphinx.ext.napoleon'
-  - 'sphinx.ext.viewcode'
+  - "sphinx.ext.autodoc"
+  - "sphinx.ext.napoleon"
+  - "sphinx.ext.viewcode"
 
 # Add a BiBTeX file so that we can create citations.
 bibtex_bibfiles:
@@ -40,3 +40,4 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
+
