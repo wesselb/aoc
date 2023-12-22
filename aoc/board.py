@@ -1,17 +1,17 @@
-from typing import Callable, Generator, Literal, TypeVar
+from typing import Callable, Dict, Generator, Literal, Set, Tuple, TypeVar
 
 __all__ = ["neighbours", "find_in_board"]
 
-Node = tuple[int, int]
+Node = Tuple[int, int]
 BoardValue = TypeVar("BoardValue")
 
 
 def neighbours(
-    board: dict[Node, BoardValue],
-    allowed: set[BoardValue],
+    board: Dict[Node, BoardValue],
+    allowed: Set[BoardValue],
     nondiagonal: bool = True,
     diagonal: bool = False,
-) -> Callable[[Node], Generator[tuple[Node, Literal[1]], None, None]]:
+) -> Callable[[Node], Generator[Tuple[Node, Literal[1]], None, None]]:
     """Construct a function that can be given as the argument `nbs` to
     :func:`aoc.graph.shortest_path`.
 
@@ -35,7 +35,7 @@ def neighbours(
     if diagonal:
         moves.extend([(1, 1), (-1, 1), (-1, -1), (1, -1)])
 
-    def _neighbours(n: Node) -> Generator[tuple[Node, Literal[1]], None, None]:
+    def _neighbours(n: Node) -> Generator[Tuple[Node, Literal[1]], None, None]:
         r, c = n
         for dr, dc in moves:
             r2, c2 = r + dr, c + dc
@@ -46,9 +46,9 @@ def neighbours(
 
 
 def find_in_board(
-    board: dict[Node, BoardValue],
+    board: Dict[Node, BoardValue],
     *values: BoardValue,
-) -> tuple[Node, ...]:
+) -> Tuple[Node, ...]:
     """Find the node of certain board values.
 
     If a value occurs multiple times, any of the corresponding nodes may be returned.
@@ -63,7 +63,7 @@ def find_in_board(
     Returns:
         tuple[Node, ...]: The nodes corresponding to `values`, in the same order.
     """
-    found: dict[int, Node] = {}
+    found: Dict[int, Node] = {}
     for n, v in board.items():
         if v in values:
             found[values.index(v)] = n

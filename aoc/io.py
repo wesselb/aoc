@@ -1,7 +1,9 @@
+from typing import Dict, List, Tuple
+
 __all__ = ["read_lines", "read_board"]
 
 
-def read_lines(file_name: str) -> list[str]:
+def read_lines(file_name: str) -> List[str]:
     """Read all lines form a file, properly dealing with newline characters and
     possible additional whitespace.
 
@@ -17,7 +19,7 @@ def read_lines(file_name: str) -> list[str]:
         return [line.strip() for line in f.read().strip().splitlines()]
 
 
-def read_board(file_name: str) -> tuple[int, int, dict[tuple[int, int], str]]:
+def read_board(file_name: str) -> Tuple[int, int, Dict[Tuple[int, int], str]]:
     """Read a board.
 
     Args:

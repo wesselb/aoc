@@ -1,5 +1,5 @@
 from queue import PriorityQueue, Queue
-from typing import Callable, Iterator, TypeVar
+from typing import Callable, Dict, Iterator, Set, Tuple, TypeVar
 
 __all__ = ["shortest_path"]
 
@@ -9,9 +9,9 @@ Node = TypeVar("Node")
 
 def shortest_path(
     start: Node,
-    nbs: Callable[[Node], Iterator[tuple[Node, float]]],
+    nbs: Callable[[Node], Iterator[Tuple[Node, float]]],
     callback: Callable[[Node, float], bool] = lambda n, d: False,
-) -> tuple[dict[Node, float], dict[Node, Node]]:
+) -> Tuple[Dict[Node, float], Dict[Node, Node]]:
     """Dijkstra's algorithm to compute all shortest paths starting at `start`.
 
     Args:
@@ -31,11 +31,11 @@ def shortest_path(
             * For every node except `start`, the previous node in the shortest path to
                 that node.
     """
-    dist: dict[Node, float] = {start: 0}
-    prev: dict[Node, Node] = {}
-    seen: set[Node] = set()
+    dist: Dict[Node, float] = {start: 0}
+    prev: Dict[Node, Node] = {}
+    seen: Set[Node] = set()
 
-    q: Queue[tuple[float, Node]] = PriorityQueue()
+    q: Queue[Tuple[float, Node]] = PriorityQueue()
     q.put((0, start))
 
     while not q.empty():
