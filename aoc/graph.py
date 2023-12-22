@@ -26,10 +26,11 @@ def shortest_path(
             every iteration with the current node and the true shortest path distance to
             that node. If this function returns `True`, the algorithm will stop.
             Otherwise, the algorithm will continue.
-        heuristic (Callable[[Node], float], optional): An heuristic that lower
+        heuristic (Callable[[Node], float], optional): An heuristic that needs to lower
             bounds the distance to the end node. It should also be monotonic, meaning
-            that it never decreases by more than the edge weight. It is it not
-            monotonic, you should set `revisit` to `True`.
+            that it never decreases by more than the edge weight. If it is not
+            monotonic, you should set `revisit` to `True` to still find the optimal
+            path.
         revisit (bool, optional): Allow the algorithm to revisit the same node
             arbitrarily many times instead of just once. Defaults to `False`.
 
