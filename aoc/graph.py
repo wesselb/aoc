@@ -59,6 +59,17 @@ def shortest_path(
         if callback(n1, d1):
             break
 
+        # Dijkstra's algorithm works because the chosen node `n1` is the node amongst
+        # all fronteer nodes with the shortest distance to `start` only via seen nodes.
+        # Namely, visiting it directly via seen nodes would give the same distance,
+        # and visiting it via another fronteer node `n2` must be farther: by choice,
+        # `d2` is larger and edges are non-negative.
+        #
+        # This argument, in fact, shows that `d1` does not have to be smallest, it just
+        # needs to be smaller than `d2` plus the cost of going from `n2` to `n1`. This
+        # condition is exactly the required monotonicity condition on `heuristic`:
+        # `heuristic` never decreases by more than the edge weight.
+
         for n2, w12 in nbs(n1):
             assert w12, f"Weight must be non-negative: {w12}."
 
