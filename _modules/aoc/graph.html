@@ -379,6 +379,17 @@ document.write(`
         <span class="k">if</span> <span class="n">callback</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
             <span class="k">break</span>
 
+        <span class="c1"># Dijkstra&#39;s algorithm works because the chosen node `n1` is the node amongst</span>
+        <span class="c1"># all fronteer nodes with the shortest distance to `start` only via seen nodes.</span>
+        <span class="c1"># Namely, visiting it directly via seen nodes would give the same distance,</span>
+        <span class="c1"># and visiting it via another fronteer node `n2` must be farther: by choice,</span>
+        <span class="c1"># `d2` is larger and edges are non-negative.</span>
+        <span class="c1">#</span>
+        <span class="c1"># This argument, in fact, shows that `d1` does not have to be smallest, it just</span>
+        <span class="c1"># needs to be smaller than `d2` plus the cost of going from `n2` to `n1`. This</span>
+        <span class="c1"># condition is exactly the required monotonicity condition on `heuristic`:</span>
+        <span class="c1"># `heuristic` never decreases by more than the edge weight.</span>
+
         <span class="k">for</span> <span class="n">n2</span><span class="p">,</span> <span class="n">w12</span> <span class="ow">in</span> <span class="n">nbs</span><span class="p">(</span><span class="n">n1</span><span class="p">):</span>
             <span class="k">assert</span> <span class="n">w12</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Weight must be non-negative: </span><span class="si">{</span><span class="n">w12</span><span class="si">}</span><span class="s2">.&quot;</span>
 
