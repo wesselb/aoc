@@ -2,7 +2,7 @@ from typing import Callable, Generator, Literal, TypeVar
 
 __all__ = ["neighbours", "find_in_board"]
 
-Node = TypeVar("Node")
+Node = tuple[int, int]
 BoardValue = TypeVar("BoardValue")
 
 
@@ -63,11 +63,11 @@ def find_in_board(
     Returns:
         tuple[Node, ...]: The nodes corresponding to `values`, in the same order.
     """
-    found = [None for _ in values]
+    found: dict[int, Node] = {}
     for n, v in board.items():
         if v in values:
             found[values.index(v)] = n
-    for n, v in zip(found, values):
-        if n is None:
-            raise AssertionError(f"Could not find `{v}`.")
-    return found
+    for i in range(len(values)):
+        if i not in found:
+            raise AssertionError(f"Could not find `{v}` in board.")
+    return tuple(found[i] for i in range(len(values)))

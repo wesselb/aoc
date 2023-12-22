@@ -1,4 +1,4 @@
-from queue import PriorityQueue
+from queue import PriorityQueue, Queue
 from typing import Callable, Iterator, TypeVar
 
 __all__ = ["shortest_path"]
@@ -31,11 +31,11 @@ def shortest_path(
             * For every node except `start`, the previous node in the shortest path to
                 that node.
     """
-    dist = {start: 0}
-    prev = {}
-    seen = set()
+    dist: dict[Node, float] = {start: 0}
+    prev: dict[Node, Node] = {}
+    seen: set[Node] = set()
 
-    q = PriorityQueue()
+    q: Queue[tuple[float, Node]] = PriorityQueue()
     q.put((0, start))
 
     while not q.empty():
