@@ -1,6 +1,6 @@
 from typing import Callable, Generator, Literal, TypeVar
 
-__all__ = ["neighbours"]
+__all__ = ["neighbours", "find_in_board"]
 
 Node = TypeVar("Node")
 BoardValue = TypeVar("BoardValue")
@@ -20,13 +20,13 @@ def neighbours(
         allowed (set[BoardValue]): Board values that we're allowed to go to.
         nondiagonal (bool, optional): Can we make non-diagonal moves? Defaults to
             allowing non-diagonal moves.
-        diagonal (bool, optional): Can we make diagonal moves? Defaults to _not_
+        diagonal (bool, optional): Can we make diagonal moves? Defaults to *not*
             allowing diagonal moves.
 
     Returns:
-        Callable[[Node], Generator[tuple[Node, Literal[1]], None, None]]: The neighbour
-            function. Takes in a node and generates tuples of neighbours and weights
-            of the edges to those neighbours.
+        Callable[[Node], Generator[tuple[Node, Literal[1]], None, None]]:
+            The neighbour function. Takes in a node and generates tuples of neighbours
+            and weights of the edges to those neighbours.
     """
 
     moves = []
@@ -43,3 +43,31 @@ def neighbours(
                 yield (r2, c2), 1
 
     return _neighbours
+
+
+def find_in_board(
+    board: dict[Node, BoardValue],
+    *values: BoardValue,
+) -> tuple[Node, ...]:
+    """Find the node of certain board values.
+
+    If a value occurs multiple times, any of the corresponding nodes may be returned.
+
+    Args:
+        board (dict[Node, BoardValue]): Board.
+        \\*values (BoardValue): Values to search for.
+
+    Raises:
+        AssertionError: If any of `values` cannot be found.
+
+    Returns:
+        tuple[Node, ...]: The nodes corresponding to `values`, in the same order.
+    """
+    found = [None for _ in values]
+    for n, v in board.items():
+        if v in values:
+            found[values.index(v)] = n
+    for n, v in zip(found, values):
+        if n is None:
+            raise AssertionError(f"Could not find `{v}`.")
+    return found

@@ -26,9 +26,10 @@ def shortest_path(
             Otherwise, the algorithm will continue.
 
     Returns:
-        dict[Node, float]: For every node, the shortest path distance to that node.
-        dict[Node, Node]: For every node except `start`, the previous node in the
-            shortest path to that node.
+        tuple[dict[Node, float], dict[Node, Node]]:
+            * For every node, the shortest path distance to that node.
+            * For every node except `start`, the previous node in the shortest path to
+                that node.
     """
     dist = {start: 0}
     prev = {}

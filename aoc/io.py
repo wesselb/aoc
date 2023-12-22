@@ -9,11 +9,12 @@ def read_lines(file_name: str) -> list[str]:
         file_name (str): File name.
 
     Returns:
-        list[str]: All lines in `file_name` without any empty lines at the beginning,
+        list[str]:
+            All lines in `file_name` without any empty lines at the beginning,
             empty lines at the end, or newline characters.
     """
     with open(file_name, "r") as f:
-        return [line.strip() for line in f.read().strip().readlines()]
+        return [line.strip() for line in f.read().strip().splitlines()]
 
 
 def read_board(file_name: str) -> tuple[int, int, dict[tuple[int, int], str]]:
@@ -23,10 +24,10 @@ def read_board(file_name: str) -> tuple[int, int, dict[tuple[int, int], str]]:
         file_name (str): File name.
 
     Returns:
-        int: Number of rows.
-        int: Number of columns.
-        dict[tuple[int, int], str]: The board. A dictionary mapping the
-            position to the value of the board.
+        tuple[int, int, dict[tuple[int, int], str]]:
+            * Number of rows.
+            * Number of columns.
+            * The board. A dictionary mapping the position to the value of the board.
     """
     lines = read_lines(file_name)
     num_rows = len(lines)
