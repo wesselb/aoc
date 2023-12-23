@@ -1,7 +1,17 @@
 import heapq
-from typing import Callable, Dict, Iterator, List, Optional, Set, Tuple, TypeVar
+from typing import (
+    Callable,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    TypeVar,
+)
 
-__all__ = ["shortest_path"]
+__all__ = ["shortest_path", "reduce_edges"]
 
 
 Node = TypeVar("Node")
@@ -108,3 +118,55 @@ def shortest_path(
                 heapq.heappush(q, (dist[n2] + heuristic(n2), n2))
 
     return dist, prev
+
+
+def reduce_edges(
+    nodes: Iterable[Node],
+    irreducible: Set[Node],
+    nbs: Callable[[Node], Iterator[Tuple[Node, float]]],
+) -> Tuple[Set[Node], Callable[[Node], Set[Tuple[Node, float]]]]:
+    """Reduce a graph by repeatedly removing nodes with only two neighbours and adding
+    the sums of the edge weights.
+
+    The underlying graph must be undirected and edge weights must be non-negative.
+
+    Args:
+        nodes (Iterable[Node]): Nodes of the graph.
+        irreducible (Set[Node]): Irreducible nodes.
+        nbs (Callable[[Node], Iterable[Tuple[Node, float]]]): Neighbourhood function.
+            See :func:`shortest_path`.
+
+    Returns:
+        tuple[set[Node], Callable[[Node], Iterable[Tuple[Node, float]]]]:
+            * Reduced node set, which is guaranteed to include `irreducible`.
+            * Neighbourhood function of the reduced graph.
+    """
+    edges: Dict[Node, Set[Tuple[Node, float]]] = {
+        n: set(nbs(n)) for n in set(nodes) | irreducible
+    }
+
+    while True:
+        did_reduce = False
+
+        for n1 in set(edges) - irreducible:
+            if len(edges[n1]) == 2:
+                (n2, w12), (n3, w13) = edges[n1]
+                # print("Reducing:", n1, edges[n1], n2, edges[n2], n3, edges[n3])
+                assert (n1, w12) in edges[n2], "Graph must be undirected."
+                assert (n1, w13) in edges[n3], "Graph must be undirected."
+                assert w12 >= 0, f"Weights must be non-negative: {w12}."
+                assert w13 >= 0, f"Weights must be non-negative: {w13}."
+
+                # Remove `n` and connect `nb1` and `nb2`.
+                did_reduce = True
+                edges[n2].remove((n1, w12))
+                edges[n2].add((n3, w12 + w13))
+                edges[n3].remove((n1, w13))
+                edges[n3].add((n2, w12 + w13))
+
+                del edges[n1]
+
+        if not did_reduce:
+            break
+
+    return set(edges), lambda n: edges[n]
