@@ -366,6 +366,39 @@ document.write(`
 <span class="sd">            then once. Defaults to `False`.</span>
 <span class="sd">        seen (set[Node], optional): Consider these nodes alaready seen.</span>
 
+<span class="sd">    In this implementation of Dijkstra&#39;s algorithm, `n1` is chosen such that (a) `n1`</span>
+<span class="sd">    is unseen and (b) `n1` has lowest `dist[n1] = d1`. By the induction hypothesis, for</span>
+<span class="sd">    all seen nodes `n2`, `dist[n2]` is the shortest distance from `start` to `n2`. It is</span>
+<span class="sd">    now true that `d1` is the shortest distance from `start` to `n1`. To prove this, let</span>
+<span class="sd">    us call unseen nodes directly connected to seen nodes *fronteer nodes*. Consider a</span>
+<span class="sd">    path from `start` to `n1` that has distance less than `d1`. If it directly connects</span>
+<span class="sd">    from `n1` to seen nodes, by construction of the algorithm, its distance must be</span>
+<span class="sd">    equal to `d1`. If it does not directly connect from `n1` to seen nodes, it must</span>
+<span class="sd">    eventually enter the seen nodes via some fronteer node `n2`. However,</span>
+<span class="sd">    `dist[n2] = d2 &gt;= d1` and edges are non-negative, so any path from `start` to `n1`</span>
+<span class="sd">    via `n2` must have distance more than `d1`. We conclude that `d1` truly is the</span>
+<span class="sd">    shortest distance from `start` to `n1`.</span>
+
+<span class="sd">    For this argument to work, `n1` does not exactly have to be chosen such that `d1`</span>
+<span class="sd">    is smallest. For all other fronteer nodes `n2`, `d1` just needs to be smaller than</span>
+<span class="sd">    `d2` plus the shortest distance from `n2` to `n1`. Now suppose that we instead</span>
+<span class="sd">    choose `n1` according to smallest `d1 + h1` where `h1 = heuristic(n1)` and</span>
+<span class="sd">    `h2 = heuristic(n2)`. Then ::</span>
+
+<span class="sd">        (d2 + dist(n2 -&gt; n1))</span>
+<span class="sd">            =  (d2 + h2 - h2 + dist(n2 -&gt; n1))</span>
+<span class="sd">            &gt;= (d1 + h1 - h2 + dist(n2 -&gt; n1)).</span>
+
+<span class="sd">    Hence, if `h2 + dist(n2 -&gt; n1) &gt;= h1`, then we can complete the induction step as</span>
+<span class="sd">    above. The condition `h1 - h2 &lt;= dist(n2 -&gt; n1)` says that, by going from `n2` to</span>
+<span class="sd">    `n1`, the heuristic value never decreases by more than the shortest distance from</span>
+<span class="sd">    `n2` to `n1`. If `n1` and `n2` are connected via an edge, this means that the</span>
+<span class="sd">    heuristic value never decrease by more than the edge weight. This is the stated</span>
+<span class="sd">    monotonicity condition.</span>
+
+<span class="sd">    If the heuristic is not monotonic, you need to search over all possible paths by</span>
+<span class="sd">    allowed the algorithm to revisit the same node more than once.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[dict[Node, float], dict[Node, Node]]:</span>
 <span class="sd">            * For every node, the shortest path distance to that node.</span>
@@ -387,40 +420,6 @@ document.write(`
 
         <span class="k">if</span> <span class="n">callback</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
             <span class="k">break</span>
-
-        <span class="c1"># In Dijkstra&#39;s algorithm, `n1` is chosen such that (a) `n1` is unseen and (b)</span>
-        <span class="c1"># `n1` has lowest `dist[n1] = d1`. By the induction hypothesis, for all seen</span>
-        <span class="c1"># nodes `n2`, `dist[n2]` is the shortest distance from `start` to `n2`. It is</span>
-        <span class="c1"># now true that `d1` is the shortest distance from `start` to `n1`. To prove</span>
-        <span class="c1"># this, let us call unseen nodes directly connected to seen nodes *fronteer</span>
-        <span class="c1"># nodes*. Consider a path from `start` to `n1` that has distance less than</span>
-        <span class="c1"># `d1`. If it directly connects from `n1` to seen nodes, by construction of</span>
-        <span class="c1"># the algorithm, its distance must be equal to `d1`. If it does not directly</span>
-        <span class="c1"># connect from `n1` to seen nodes, it must eventually enter the seen nodes</span>
-        <span class="c1"># via some fronteer node `n2`. However, `dist[n2] = d2 &gt;= d1` and edges are</span>
-        <span class="c1"># non-negative, so any path from `start` to `n1` via `n2` must have distance</span>
-        <span class="c1"># more than `d1`. We conclude that `d1` truly is the shortest distance from</span>
-        <span class="c1"># `start` to `n1`.</span>
-        <span class="c1">#</span>
-        <span class="c1"># For this argument to work, `n1` does not exactly have to be chosen such that</span>
-        <span class="c1"># `d1` is smallest. For all other fronteer nodes `n2`, `d1` just needs to be</span>
-        <span class="c1"># smaller than `d2` plus the shortest distance from `n2` to `n1`. Now suppose</span>
-        <span class="c1"># that we instead choose `n1` according to smallest `d1 + h1` where</span>
-        <span class="c1"># `h1 = heuristic(n1)` and `h2 = heuristic(n2)`, then</span>
-        <span class="c1">#</span>
-        <span class="c1">#     (d2 + dist(n2 -&gt; n1))</span>
-        <span class="c1">#         =  (d2 + h2 - h2 + dist(n2 -&gt; n1))</span>
-        <span class="c1">#         &gt;= (d1 + h1 - h2 + dist(n2 -&gt; n1)).</span>
-        <span class="c1">#</span>
-        <span class="c1"># Hence, if `h2 + dist(n2 -&gt; n1) &gt;= h1`, then we can complete the induction step</span>
-        <span class="c1"># as above. The condition `h1 - h2 &lt;= dist(n2 -&gt; n1)` says that, by going from</span>
-        <span class="c1"># `n2` to `n1`, the heuristic value never decreases by more than the shortest</span>
-        <span class="c1"># distance from `n2` to `n1`. If `n1` and `n2` are connected via an edge, this</span>
-        <span class="c1"># means that the heuristic value never decrease by more than the edge weight.</span>
-        <span class="c1"># This is the stated monotonicity condition.</span>
-        <span class="c1">#</span>
-        <span class="c1"># If the heuristic is not monotonic, you need to search over all possible</span>
-        <span class="c1"># paths by allowed the algorithm to revisit the same node more than once.</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">revisit</span><span class="p">:</span>
             <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
