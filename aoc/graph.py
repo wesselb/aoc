@@ -151,7 +151,6 @@ def reduce_edges(
         for n1 in set(edges) - irreducible:
             if len(edges[n1]) == 2:
                 (n2, w12), (n3, w13) = edges[n1]
-                # print("Reducing:", n1, edges[n1], n2, edges[n2], n3, edges[n3])
                 assert (n1, w12) in edges[n2], "Graph must be undirected."
                 assert (n1, w13) in edges[n3], "Graph must be undirected."
                 assert w12 >= 0, f"Weights must be non-negative: {w12}."
