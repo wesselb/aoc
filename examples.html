@@ -383,11 +383,11 @@ document.write(`
 <section id="compute-a-shortest-path-on-a-board">
 <h2>Compute a Shortest Path on a Board<a class="headerlink" href="#compute-a-shortest-path-on-a-board" title="Permalink to this heading">#</a></h2>
 <p>Suppose that <code class="docutils literal notranslate"><span class="pre">input.txt</span></code> has the following contents:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.....</span>
-<span class="o">.</span><span class="c1">##..#</span>
-<span class="o">.</span><span class="c1">#....</span>
-<span class="o">.</span><span class="c1">#.###</span>
-<span class="o">.</span><span class="c1">#...E</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>S.....
+.##..#
+.#....
+.#.###
+.#...E
 </pre></div>
 </div>
 <p>We would like to find the shortest path from <code class="docutils literal notranslate"><span class="pre">S</span></code> to <code class="docutils literal notranslate"><span class="pre">E</span></code>.
@@ -400,7 +400,29 @@ You can do this in the following way:</p>
 
 <span class="n">dist</span><span class="p">,</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">aoc</span><span class="o">.</span><span class="n">shortest_path</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">aoc</span><span class="o">.</span><span class="n">neighbours</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">}))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="n">end</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distance:&quot;</span><span class="p">,</span> <span class="n">dist</span><span class="p">[</span><span class="n">end</span><span class="p">])</span>
+
+<span class="c1"># Mark the shortest path with `P`, but not marking the start and end.</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">end</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">prev</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">start</span><span class="p">:</span> 
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">board</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;P&quot;</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">aoc</span><span class="o">.</span><span class="n">visualise_board</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Distance: 11
+
+SPPP..
+.##P.#
+.#PP..
+.#P###
+.#PPPE
 </pre></div>
 </div>
 </section>

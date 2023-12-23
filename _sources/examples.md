@@ -5,7 +5,7 @@
 
 Suppose that `input.txt` has the following contents:
 
-```
+```text
 S.....
 .##..#
 .#....
@@ -25,6 +25,30 @@ start, end = aoc.find_in_board(board, "S", "E")
 
 dist, prev = aoc.shortest_path(start, aoc.neighbours(board, allowed={".", "E"}))
 
-print(dist[end])
+print("Distance:", dist[end])
+
+# Mark the shortest path with `P`, but not marking the start and end.
+n = end
+while True:
+    n = prev[n]
+    if n == start: 
+        break
+    else:
+        board[n] = "P"
+
+print()
+aoc.visualise_board(board)
+```
+
+Output:
+
+```text
+Distance: 11
+
+SPPP..
+.##P.#
+.#PP..
+.#P###
+.#PPPE
 ```
 
