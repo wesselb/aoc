@@ -318,10 +318,20 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for aoc.graph</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">PriorityQueue</span><span class="p">,</span> <span class="n">Queue</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span></span><span class="kn">import</span> <span class="nn">heapq</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;shortest_path&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;shortest_path&quot;</span><span class="p">,</span> <span class="s2">&quot;reduce_edges&quot;</span><span class="p">]</span>
 
 
 <span class="n">Node</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Node&quot;</span><span class="p">)</span>
@@ -366,11 +376,10 @@ document.write(`
     <span class="n">prev</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">seen</span> <span class="o">=</span> <span class="n">seen</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="n">q</span><span class="p">:</span> <span class="n">Queue</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="n">PriorityQueue</span><span class="p">()</span>
-    <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">heuristic</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">start</span><span class="p">))</span>
+    <span class="n">q</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">heuristic</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">start</span><span class="p">)]</span>
 
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">q</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
-        <span class="n">d1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+        <span class="n">d1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 
         <span class="c1"># This needs to execute first to ensure that `d1` is right.</span>
         <span class="k">if</span> <span class="n">n1</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
@@ -426,9 +435,61 @@ document.write(`
             <span class="k">if</span> <span class="n">alt</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)):</span>
                 <span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt</span>
                 <span class="n">prev</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">=</span> <span class="n">n1</span>
-                <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">+</span> <span class="n">heuristic</span><span class="p">(</span><span class="n">n2</span><span class="p">),</span> <span class="n">n2</span><span class="p">))</span>
+                <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">+</span> <span class="n">heuristic</span><span class="p">(</span><span class="n">n2</span><span class="p">),</span> <span class="n">n2</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">prev</span></div>
+
+
+<div class="viewcode-block" id="reduce_edges"><a class="viewcode-back" href="../../api.html#aoc.graph.reduce_edges">[docs]</a><span class="k">def</span> <span class="nf">reduce_edges</span><span class="p">(</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span>
+    <span class="n">irreducible</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span>
+    <span class="n">nbs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reduce a graph by repeatedly removing nodes with only two neighbours and adding</span>
+<span class="sd">    the sums of the edge weights.</span>
+
+<span class="sd">    The underlying graph must be undirected and edge weights must be non-negative.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nodes (Iterable[Node]): Nodes of the graph.</span>
+<span class="sd">        irreducible (Set[Node]): Irreducible nodes.</span>
+<span class="sd">        nbs (Callable[[Node], Iterable[Tuple[Node, float]]]): Neighbourhood function.</span>
+<span class="sd">            See :func:`shortest_path`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[set[Node], Callable[[Node], Iterable[Tuple[Node, float]]]]:</span>
+<span class="sd">            * Reduced node set, which is guaranteed to include `irreducible`.</span>
+<span class="sd">            * Neighbourhood function of the reduced graph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">edges</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">n</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">nbs</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="o">|</span> <span class="n">irreducible</span>
+    <span class="p">}</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">did_reduce</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">n1</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">-</span> <span class="n">irreducible</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="n">n1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="n">w12</span><span class="p">),</span> <span class="p">(</span><span class="n">n3</span><span class="p">,</span> <span class="n">w13</span><span class="p">)</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span>
+                <span class="c1"># print(&quot;Reducing:&quot;, n1, edges[n1], n2, edges[n2], n3, edges[n3])</span>
+                <span class="k">assert</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">w12</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">[</span><span class="n">n2</span><span class="p">],</span> <span class="s2">&quot;Graph must be undirected.&quot;</span>
+                <span class="k">assert</span> <span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">w13</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">[</span><span class="n">n3</span><span class="p">],</span> <span class="s2">&quot;Graph must be undirected.&quot;</span>
+                <span class="k">assert</span> <span class="n">w12</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Weights must be non-negative: </span><span class="si">{</span><span class="n">w12</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="k">assert</span> <span class="n">w13</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Weights must be non-negative: </span><span class="si">{</span><span class="n">w13</span><span class="si">}</span><span class="s2">.&quot;</span>
+
+                <span class="c1"># Remove `n` and connect `nb1` and `nb2`.</span>
+                <span class="n">did_reduce</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">edges</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">n1</span><span class="p">,</span> <span class="n">w12</span><span class="p">))</span>
+                <span class="n">edges</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">n3</span><span class="p">,</span> <span class="n">w12</span> <span class="o">+</span> <span class="n">w13</span><span class="p">))</span>
+                <span class="n">edges</span><span class="p">[</span><span class="n">n3</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">n1</span><span class="p">,</span> <span class="n">w13</span><span class="p">))</span>
+                <span class="n">edges</span><span class="p">[</span><span class="n">n3</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">n2</span><span class="p">,</span> <span class="n">w12</span> <span class="o">+</span> <span class="n">w13</span><span class="p">))</span>
+
+                <span class="k">del</span> <span class="n">edges</span><span class="p">[</span><span class="n">n1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">did_reduce</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">edges</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">edges</span><span class="p">[</span><span class="n">n</span><span class="p">]</span></div>
 </pre></div>
 
                 </article>

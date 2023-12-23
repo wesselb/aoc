@@ -318,9 +318,19 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for aoc.board</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Generator</span><span class="p">,</span>
+    <span class="n">Iterable</span><span class="p">,</span>
+    <span class="n">Literal</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;neighbours&quot;</span><span class="p">,</span> <span class="s2">&quot;find_in_board&quot;</span><span class="p">,</span> <span class="s2">&quot;turn_right&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;neighbours&quot;</span><span class="p">,</span> <span class="s2">&quot;find_in_board&quot;</span><span class="p">,</span> <span class="s2">&quot;turn_right&quot;</span><span class="p">,</span> <span class="s2">&quot;visualise_board&quot;</span><span class="p">]</span>
 
 <span class="n">Node</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
 <span class="n">BoardValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;BoardValue&quot;</span><span class="p">)</span>
@@ -438,6 +448,37 @@ document.write(`
 <span class="sd">            * Delta in the column direction after turning left.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_turn_right</span><span class="p">[</span><span class="o">-</span><span class="n">dr</span><span class="p">,</span> <span class="o">-</span><span class="n">dc</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="visualise_board"><a class="viewcode-back" href="../../api.html#aoc.board.visualise_board">[docs]</a><span class="k">def</span> <span class="nf">visualise_board</span><span class="p">(</span>
+    <span class="n">board</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">marks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Node</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Visualise a board.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        board (dict[Node, str]): Board to visualise.</span>
+<span class="sd">        marks (dict[str, Iterable[Node]], optional): Draw markers at particular nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">min_r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">max_r</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">min_c</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">max_c</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="c1"># Copy the board before mutation.</span>
+    <span class="k">if</span> <span class="n">marks</span><span class="p">:</span>
+        <span class="n">board</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">marks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                <span class="n">board</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
+
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_r</span><span class="p">,</span> <span class="n">max_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_c</span><span class="p">,</span> <span class="n">max_c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">board</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span></div>
 </pre></div>
 
                 </article>
