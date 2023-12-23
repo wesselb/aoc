@@ -95,7 +95,9 @@ _turn_right: Dict[Tuple[int, int], Tuple[int, int]] = {
 
 
 def turn_right(dr: int, dc: int) -> Tuple[int, int]:
-    """On a board, turn right. We count positions in the following way:
+    """On a board, turn right.
+
+    We count positions in the following way::
 
           0123
         0 ....
