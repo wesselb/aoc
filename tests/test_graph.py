@@ -1,10 +1,24 @@
+from typing import Callable
+
 import aoc
 
 
-def test_shortest_path(board_path: str) -> None:
-    _, _, board = aoc.read_board(board_path)
+def test_shortest_path(write_file: Callable[[str, str], str]) -> None:
+    _, _, board = aoc.read_board(
+        write_file(
+            "input.txt",
+            """
+            S.....
+            .##..#
+            .#....
+            .#.###
+            .#...E
+            """,
+        )
+    )
     start, end = aoc.find_in_board(board, "S", "E")
-    dist, prev = aoc.shortest_path(start, aoc.neighbours(board, allowed={".", "E"}))
+    nbs = aoc.neighbours(board, allowed={".", "S", "E"})
+    dist, prev = aoc.shortest_path(start, nbs)
 
     # Check distance.
     assert dist[end] == 11
@@ -28,3 +42,26 @@ def test_shortest_path(board_path: str) -> None:
         (4, 4),
         (4, 5),
     ]
+
+
+def test_reduce_edges(write_file: Callable[[str, str], str]) -> None:
+    _, _, board = aoc.read_board(
+        write_file(
+            "input.txt",
+            """
+            S.....
+            .##..#
+            .#....
+            .#.###
+            .#...E
+            """,
+        )
+    )
+    start, end = aoc.find_in_board(board, "S", "E")
+    nbs = aoc.neighbours(board, allowed={".", "S", "E"})
+    nodes = {n for n, v in board.items() if v in {".", "S", "E"}}
+    _, nbs, aoc.reduce_edges(nodes, {start, end}, nbs)
+    dist, prev = aoc.shortest_path(start, nbs)
+
+    # Check distance.
+    assert dist[end] == 11
