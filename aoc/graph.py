@@ -1,5 +1,5 @@
-from queue import PriorityQueue, Queue
-from typing import Callable, Dict, Iterator, Optional, Set, Tuple, TypeVar
+import heapq
+from typing import Callable, Dict, Iterator, List, Optional, Set, Tuple, TypeVar
 
 __all__ = ["shortest_path"]
 
@@ -46,11 +46,10 @@ def shortest_path(
     prev: Dict[Node, Node] = {}
     seen = seen or set()
 
-    q: Queue[Tuple[float, Node]] = PriorityQueue()
-    q.put((heuristic(start), start))
+    q: List[Tuple[float, Node]] = [(heuristic(start), start)]
 
-    while not q.empty():
-        d1, n1 = q.get()
+    while q:
+        d1, n1 = heapq.heappop(q)
 
         # This needs to execute first to ensure that `d1` is right.
         if n1 in seen:
@@ -106,6 +105,6 @@ def shortest_path(
             if alt < dist.get(n2, float("inf")):
                 dist[n2] = alt
                 prev[n2] = n1
-                q.put((dist[n2] + heuristic(n2), n2))
+                heapq.heappush(q, (dist[n2] + heuristic(n2), n2))
 
     return dist, prev

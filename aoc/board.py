@@ -1,6 +1,16 @@
-from typing import Callable, Dict, Generator, Literal, Optional, Set, Tuple, TypeVar
+from typing import (
+    Callable,
+    Dict,
+    Generator,
+    Iterable,
+    Literal,
+    Optional,
+    Set,
+    Tuple,
+    TypeVar,
+)
 
-__all__ = ["neighbours", "find_in_board", "turn_right"]
+__all__ = ["neighbours", "find_in_board", "turn_right", "visualise_board"]
 
 Node = Tuple[int, int]
 BoardValue = TypeVar("BoardValue")
@@ -118,3 +128,34 @@ def turn_left(dr: int, dc: int) -> Tuple[int, int]:
             * Delta in the column direction after turning left.
     """
     return _turn_right[-dr, -dc]
+
+
+def visualise_board(
+    board: Dict[Node, str],
+    marks: Optional[Dict[str, Iterable[Node]]] = None,
+) -> None:
+    """Visualise a board.
+
+    Args:
+        board (dict[Node, str]): Board to visualise.
+        marks (dict[str, Iterable[Node]], optional): Draw markers at particular nodes.
+    """
+    min_r = min(r for r, _ in board.keys())
+    max_r = max(r for r, _ in board.keys())
+    min_c = min(c for _, c in board.keys())
+    max_c = max(c for _, c in board.keys())
+
+    # Copy the board before mutation.
+    if marks:
+        board = dict(board)
+        for m, nodes in marks.items():
+            for n in nodes:
+                board[n] = m
+
+    for r in range(min_r, max_r + 1):
+        for c in range(min_c, max_c + 1):
+            if (r, c) in board:
+                print(board[r, c], end="")
+            else:
+                print(" ", end="")
+        print()
