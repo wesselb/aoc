@@ -318,17 +318,17 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for aoc.board</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;neighbours&quot;</span><span class="p">,</span> <span class="s2">&quot;find_in_board&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;neighbours&quot;</span><span class="p">,</span> <span class="s2">&quot;find_in_board&quot;</span><span class="p">,</span> <span class="s2">&quot;turn_right&quot;</span><span class="p">]</span>
 
 <span class="n">Node</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
 <span class="n">BoardValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;BoardValue&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="neighbours"><a class="viewcode-back" href="../../api.html#aoc.board.neighbours">[docs]</a><span class="k">def</span> <span class="nf">neighbours</span><span class="p">(</span>
-    <span class="n">board</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">BoardValue</span><span class="p">],</span>
-    <span class="n">allowed</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">BoardValue</span><span class="p">],</span>
+    <span class="n">board</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">BoardValue</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">allowed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">BoardValue</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nondiagonal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">diagonal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
@@ -336,8 +336,8 @@ document.write(`
 <span class="sd">    :func:`aoc.graph.shortest_path`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        board (dict[Node, BoardValue]): Board.</span>
-<span class="sd">        allowed (set[BoardValue]): Board values that we&#39;re allowed to go to.</span>
+<span class="sd">        board (dict[Node, BoardValue], optional): Board.</span>
+<span class="sd">        allowed (set[BoardValue], optional): Board values that we&#39;re allowed to go to.</span>
 <span class="sd">        nondiagonal (bool, optional): Can we make non-diagonal moves? Defaults to</span>
 <span class="sd">            allowing non-diagonal moves.</span>
 <span class="sd">        diagonal (bool, optional): Can we make diagonal moves? Defaults to *not*</span>
@@ -359,8 +359,11 @@ document.write(`
         <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">n</span>
         <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="n">moves</span><span class="p">:</span>
             <span class="n">r2</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="n">dc</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">board</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">),</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">board</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">board</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">board</span> <span class="ow">and</span> <span class="n">allowed</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">),</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">_neighbours</span></div>
 
@@ -391,6 +394,50 @@ document.write(`
         <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">found</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find `</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">` in board.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">found</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)))</span></div>
+
+
+<span class="n">_turn_right</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="turn_right"><a class="viewcode-back" href="../../api.html#aoc.board.turn_right">[docs]</a><span class="k">def</span> <span class="nf">turn_right</span><span class="p">(</span><span class="n">dr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;On a board, turn right. We count positions in the following way:</span>
+
+<span class="sd">          0123</span>
+<span class="sd">        0 ....</span>
+<span class="sd">        1 ....</span>
+<span class="sd">        2 ....</span>
+<span class="sd">        3 ....</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dr (int): Delta in the row direction.</span>
+<span class="sd">        dc (int): Delta in the column direction.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[int, int]:</span>
+<span class="sd">            * Delta in the row direction after turning right.</span>
+<span class="sd">            * Delta in the column direction after turning right.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_turn_right</span><span class="p">[</span><span class="n">dr</span><span class="p">,</span> <span class="n">dc</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">turn_left</span><span class="p">(</span><span class="n">dr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;On a board, turn right. We count positions like we do for :func:`turn_right`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dr (int): Delta in the row direction.</span>
+<span class="sd">        dc (int): Delta in the column direction.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[int, int]:</span>
+<span class="sd">            * Delta in the row direction after turning left.</span>
+<span class="sd">            * Delta in the column direction after turning left.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_turn_right</span><span class="p">[</span><span class="o">-</span><span class="n">dr</span><span class="p">,</span> <span class="o">-</span><span class="n">dc</span><span class="p">]</span>
 </pre></div>
 
                 </article>
