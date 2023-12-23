@@ -1,14 +1,14 @@
-from typing import Callable, Dict, Generator, Literal, Set, Tuple, TypeVar
+from typing import Callable, Dict, Generator, Literal, Optional, Set, Tuple, TypeVar
 
-__all__ = ["neighbours", "find_in_board"]
+__all__ = ["neighbours", "find_in_board", "turn_right"]
 
 Node = Tuple[int, int]
 BoardValue = TypeVar("BoardValue")
 
 
 def neighbours(
-    board: Dict[Node, BoardValue],
-    allowed: Set[BoardValue],
+    board: Optional[Dict[Node, BoardValue]] = None,
+    allowed: Optional[Set[BoardValue]] = None,
     nondiagonal: bool = True,
     diagonal: bool = False,
 ) -> Callable[[Node], Generator[Tuple[Node, Literal[1]], None, None]]:
@@ -16,8 +16,8 @@ def neighbours(
     :func:`aoc.graph.shortest_path`.
 
     Args:
-        board (dict[Node, BoardValue]): Board.
-        allowed (set[BoardValue]): Board values that we're allowed to go to.
+        board (dict[Node, BoardValue], optional): Board.
+        allowed (set[BoardValue], optional): Board values that we're allowed to go to.
         nondiagonal (bool, optional): Can we make non-diagonal moves? Defaults to
             allowing non-diagonal moves.
         diagonal (bool, optional): Can we make diagonal moves? Defaults to *not*
@@ -39,8 +39,11 @@ def neighbours(
         r, c = n
         for dr, dc in moves:
             r2, c2 = r + dr, c + dc
-            if (r2, c2) in board and board[r2, c2] in allowed:
-                yield (r2, c2), 1
+            if board and (r2, c2) not in board:
+                continue
+            if board and allowed and board[r2, c2] not in allowed:
+                continue
+            yield (r2, c2), 1
 
     return _neighbours
 
@@ -71,3 +74,47 @@ def find_in_board(
         if i not in found:
             raise AssertionError(f"Could not find `{v}` in board.")
     return tuple(found[i] for i in range(len(values)))
+
+
+_turn_right: Dict[Tuple[int, int], Tuple[int, int]] = {
+    (1, 0): (0, -1),
+    (0, -1): (-1, 0),
+    (-1, 0): (0, 1),
+    (0, 1): (1, 0),
+}
+
+
+def turn_right(dr: int, dc: int) -> Tuple[int, int]:
+    """On a board, turn right. We count positions in the following way:
+
+          0123
+        0 ....
+        1 ....
+        2 ....
+        3 ....
+
+    Args:
+        dr (int): Delta in the row direction.
+        dc (int): Delta in the column direction.
+
+    Returns:
+        tuple[int, int]:
+            * Delta in the row direction after turning right.
+            * Delta in the column direction after turning right.
+    """
+    return _turn_right[dr, dc]
+
+
+def turn_left(dr: int, dc: int) -> Tuple[int, int]:
+    """On a board, turn right. We count positions like we do for :func:`turn_right`.
+
+    Args:
+        dr (int): Delta in the row direction.
+        dc (int): Delta in the column direction.
+
+    Returns:
+        tuple[int, int]:
+            * Delta in the row direction after turning left.
+            * Delta in the column direction after turning left.
+    """
+    return _turn_right[-dr, -dc]
