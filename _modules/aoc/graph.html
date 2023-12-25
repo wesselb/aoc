@@ -347,12 +347,17 @@ document.write(`
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dijkstra&#39;s algorithm to compute all shortest paths starting at `start`.</span>
 
+<span class="sd">    All edge weights must be non-negative. You can also use this function to efficiently</span>
+<span class="sd">    perform a BFS::</span>
+
+<span class="sd">        reachable, _ = shortest_path(start, nbs)</span>
+
 <span class="sd">    Args:</span>
 <span class="sd">        start (Node): Start.</span>
-<span class="sd">        nbs (Callable[[Node], Iterator[tuple[Node, float]]]): A function that</span>
-<span class="sd">            takes in a node and iterates over all neighbours, giving tuples containing</span>
-<span class="sd">            the neighbour and the weight of the edge to that neighbour. The weights</span>
-<span class="sd">            must be non-negative.</span>
+<span class="sd">        nbs (Callable[[Node], Iterator[tuple[Node, float]]]): The neighbourhood function</span>
+<span class="sd">            of the graph: a function that takes in a node and iterates over all</span>
+<span class="sd">            neighbours, giving tuples containing the neighbour and the weight of the</span>
+<span class="sd">            edge to that neighbour.</span>
 <span class="sd">        callback (Callable[[Node, float], bool], optional): A function that is called at</span>
 <span class="sd">            every iteration with the current node and the true shortest path distance to</span>
 <span class="sd">            that node. If this function returns `True`, the algorithm will stop.</span>
@@ -364,7 +369,7 @@ document.write(`
 <span class="sd">            path.</span>
 <span class="sd">        revisit (bool, optional): Allow the algorithm to revisit the same node more</span>
 <span class="sd">            then once. Defaults to `False`.</span>
-<span class="sd">        seen (set[Node], optional): Consider these nodes alaready seen.</span>
+<span class="sd">        seen (set[Node], optional): Consider these nodes already seen.</span>
 
 <span class="sd">    In this implementation of Dijkstra&#39;s algorithm, `n1` is chosen such that (a) `n1`</span>
 <span class="sd">    is unseen and (b) `n1` has lowest `dist[n1] = d1`. By the induction hypothesis, for</span>
@@ -407,7 +412,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dist</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
     <span class="n">prev</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">seen</span> <span class="o">=</span> <span class="n">seen</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="k">if</span> <span class="n">seen</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">seen</span>
 
     <span class="n">q</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[(</span><span class="n">heuristic</span><span class="p">(</span><span class="n">start</span><span class="p">),</span> <span class="n">start</span><span class="p">)]</span>
 
