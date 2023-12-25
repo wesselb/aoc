@@ -368,6 +368,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.io">IO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.board">Board</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.graph">Graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.flow">Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.interval">Interval</a></li>
 </ul>
             </nav>
         </div>
@@ -473,6 +475,30 @@ and weights of the edges to those neighbours.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Callable[[Node], Generator[tuple[Node, Literal[1]], None, None]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.turn_left">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">turn_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/board.html#turn_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.turn_left" title="Permalink to this definition">#</a></dt>
+<dd><p>On a board, turn right. We count positions like we do for <a class="reference internal" href="#aoc.board.turn_right" title="aoc.board.turn_right"><code class="xref py py-func docutils literal notranslate"><span class="pre">turn_right()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dr</strong> (<em>int</em>) – Delta in the row direction.</p></li>
+<li><p><strong>dc</strong> (<em>int</em>) – Delta in the column direction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Delta in the row direction after turning left.</p></li>
+<li><p>Delta in the column direction after turning left.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -632,6 +658,94 @@ that node.</p></li>
 </dd></dl>
 
 </section>
+<section id="module-aoc.flow">
+<span id="flow"></span><h2>Flow<a class="headerlink" href="#module-aoc.flow" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.flow.max_flow">
+<span class="sig-prename descclassname"><span class="pre">aoc.flow.</span></span><span class="sig-name descname"><span class="pre">max_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sink</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Node</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/flow.html#max_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.flow.max_flow" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the maximum flow and minimum cut with Edmond Karp’s variation of
+the Ford-Fulkerson algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> (<em>set</em><em>[</em><em>Nodes</em><em>]</em>) – Nodes of the graph.</p></li>
+<li><p><strong>nbs</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>Iterable</em><em>[</em><em>tuple</em><em>[</em><em>Node</em><em>, </em><em>float</em><em>]</em><em>]</em><em>]</em>) – Neighbourhood function.
+See <a class="reference internal" href="#aoc.graph.shortest_path" title="aoc.graph.shortest_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">graph.shortest_path()</span></code></a>.</p></li>
+<li><p><strong>source</strong> (<em>Node</em>) – Source node.</p></li>
+<li><p><strong>sink</strong> (<em>Node</em>) – Sink node.</p></li>
+</ul>
+</dd>
+</dl>
+<p>It is clear that every cut value upper bounds every flow value. Consider the maximum
+flow. Then all nodes reachable from <cite>source</cite> in the residual graph define a cut with
+value equal to the maximum flow value. Therefore, the maximum flow value is equal
+to the minimum cut value.</p>
+<p>To find the maximum flow, we iteratively find paths along which we can increase the
+flow using a BFS. BFS will find the path with the least number of edges in O(E)
+time, and it will never choose the same path twice. Since there are at most
+O(V E) paths along which to increase the flow, this algorithm runs in O(V E^2)
+time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Maximum flow value and minimum cut value.</p></li>
+<li><p>A maximum flow.</p></li>
+<li><p>Node partition of a minimum cut.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[float, dict[tuple[Node, Node], float], tuple[set[Node], set[Node]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-aoc.interval">
+<span id="interval"></span><h2>Interval<a class="headerlink" href="#module-aoc.interval" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.interval.intervals_diff">
+<span class="sig-prename descclassname"><span class="pre">aoc.interval.</span></span><span class="sig-name descname"><span class="pre">intervals_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ints1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ints2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/interval.html#intervals_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.interval.intervals_diff" title="Permalink to this definition">#</a></dt>
+<dd><p>For two sets of disjoint open-closed intervals on the real line <cite>ints1</cite> and
+<cite>ints2</cite>, compute the set difference <cite>ints1 - ints2</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ints1</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – First set of intervals.</p></li>
+<li><p><strong>ints2</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – Second set of intervals.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>ints1 - ints2</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.interval.intervals_intersect">
+<span class="sig-prename descclassname"><span class="pre">aoc.interval.</span></span><span class="sig-name descname"><span class="pre">intervals_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ints1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ints2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/interval.html#intervals_intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.interval.intervals_intersect" title="Permalink to this definition">#</a></dt>
+<dd><p>For two sets of disjoint open-closed intervals on the real line <cite>ints1</cite> and
+<cite>ints2</cite>, compute the intersection <cite>ints1 &amp; ints2</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ints1</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – First set of intervals.</p></li>
+<li><p><strong>ints2</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – Second set of intervals.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>ints1 &amp; ints2</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -691,6 +805,8 @@ that node.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.io">IO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.board">Board</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.graph">Graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.flow">Flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.interval">Interval</a></li>
 </ul>
   </nav></div>
 

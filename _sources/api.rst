@@ -15,3 +15,13 @@ Graph
 -----
 .. automodule:: aoc.graph
     :members:
+
+Flow
+----
+.. automodule:: aoc.flow
+    :members:
+
+Interval
+--------
+.. automodule:: aoc.interval
+    :members:
