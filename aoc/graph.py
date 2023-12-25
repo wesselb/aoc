@@ -27,12 +27,17 @@ def shortest_path(
 ) -> Tuple[Dict[Node, float], Dict[Node, Node]]:
     """Dijkstra's algorithm to compute all shortest paths starting at `start`.
 
+    All edge weights must be non-negative. You can also use this function to efficiently
+    perform a BFS::
+
+        reachable, _ = shortest_path(start, nbs)
+
     Args:
         start (Node): Start.
-        nbs (Callable[[Node], Iterator[tuple[Node, float]]]): A function that
-            takes in a node and iterates over all neighbours, giving tuples containing
-            the neighbour and the weight of the edge to that neighbour. The weights
-            must be non-negative.
+        nbs (Callable[[Node], Iterator[tuple[Node, float]]]): The neighbourhood function
+            of the graph: a function that takes in a node and iterates over all
+            neighbours, giving tuples containing the neighbour and the weight of the
+            edge to that neighbour.
         callback (Callable[[Node, float], bool], optional): A function that is called at
             every iteration with the current node and the true shortest path distance to
             that node. If this function returns `True`, the algorithm will stop.
@@ -44,7 +49,7 @@ def shortest_path(
             path.
         revisit (bool, optional): Allow the algorithm to revisit the same node more
             then once. Defaults to `False`.
-        seen (set[Node], optional): Consider these nodes alaready seen.
+        seen (set[Node], optional): Consider these nodes already seen.
 
     In this implementation of Dijkstra's algorithm, `n1` is chosen such that (a) `n1`
     is unseen and (b) `n1` has lowest `dist[n1] = d1`. By the induction hypothesis, for
@@ -87,7 +92,7 @@ def shortest_path(
     """
     dist: Dict[Node, float] = {start: 0}
     prev: Dict[Node, Node] = {}
-    seen = seen or set()
+    seen = set() if seen is None else seen
 
     q: List[Tuple[float, Node]] = [(heuristic(start), start)]
 
