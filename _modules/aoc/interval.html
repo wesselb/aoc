@@ -167,7 +167,9 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">Application Programming Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../io.html">Input–Output Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interval.html">Interval Arithmetic</a></li>
 </ul>
 
     </div>
@@ -349,7 +351,7 @@ document.write(`
         <span class="k">return</span> <span class="n">_remove_empty</span><span class="p">({(</span><span class="n">i2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i1</span><span class="p">[</span><span class="mi">1</span><span class="p">])})</span>
 
 
-<div class="viewcode-block" id="intervals_diff"><a class="viewcode-back" href="../../api.html#aoc.interval.intervals_diff">[docs]</a><span class="k">def</span> <span class="nf">intervals_diff</span><span class="p">(</span><span class="n">ints1</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">],</span> <span class="n">ints2</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">]:</span>
+<div class="viewcode-block" id="intervals_diff"><a class="viewcode-back" href="../../interval.html#aoc.interval.intervals_diff">[docs]</a><span class="k">def</span> <span class="nf">intervals_diff</span><span class="p">(</span><span class="n">ints1</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">],</span> <span class="n">ints2</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;For two sets of disjoint open-closed intervals on the real line `ints1` and</span>
 <span class="sd">    `ints2`, compute the set difference `ints1 - ints2`.</span>
 
@@ -371,7 +373,7 @@ document.write(`
     <span class="k">return</span> <span class="n">_remove_empty</span><span class="p">({(</span><span class="nb">max</span><span class="p">(</span><span class="n">i1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">min</span><span class="p">(</span><span class="n">i1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i2</span><span class="p">[</span><span class="mi">1</span><span class="p">]))})</span>
 
 
-<div class="viewcode-block" id="intervals_intersect"><a class="viewcode-back" href="../../api.html#aoc.interval.intervals_intersect">[docs]</a><span class="k">def</span> <span class="nf">intervals_intersect</span><span class="p">(</span><span class="n">ints1</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">],</span> <span class="n">ints2</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">]:</span>
+<div class="viewcode-block" id="intervals_intersect"><a class="viewcode-back" href="../../interval.html#aoc.interval.intervals_intersect">[docs]</a><span class="k">def</span> <span class="nf">intervals_intersect</span><span class="p">(</span><span class="n">ints1</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">],</span> <span class="n">ints2</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Interval</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;For two sets of disjoint open-closed intervals on the real line `ints1` and</span>
 <span class="sd">    `ints2`, compute the intersection `ints1 &amp; ints2`.</span>
 

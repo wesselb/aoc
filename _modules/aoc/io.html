@@ -167,7 +167,9 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">Application Programming Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../io.html">Input–Output Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interval.html">Interval Arithmetic</a></li>
 </ul>
 
     </div>
@@ -323,7 +325,7 @@ document.write(`
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;read_lines&quot;</span><span class="p">,</span> <span class="s2">&quot;read_board&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="read_lines"><a class="viewcode-back" href="../../api.html#aoc.io.read_lines">[docs]</a><span class="k">def</span> <span class="nf">read_lines</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="read_lines"><a class="viewcode-back" href="../../io.html#aoc.io.read_lines">[docs]</a><span class="k">def</span> <span class="nf">read_lines</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read all lines form a file, properly dealing with newline characters and</span>
 <span class="sd">    possible additional whitespace.</span>
 
@@ -339,7 +341,7 @@ document.write(`
         <span class="k">return</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()]</span></div>
 
 
-<div class="viewcode-block" id="read_board"><a class="viewcode-back" href="../../api.html#aoc.io.read_board">[docs]</a><span class="k">def</span> <span class="nf">read_board</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]:</span>
+<div class="viewcode-block" id="read_board"><a class="viewcode-back" href="../../io.html#aoc.io.read_board">[docs]</a><span class="k">def</span> <span class="nf">read_board</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a board.</span>
 
 <span class="sd">    Args:</span>

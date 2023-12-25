@@ -167,7 +167,9 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">Application Programming Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../io.html">Input–Output Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interval.html">Interval Arithmetic</a></li>
 </ul>
 
     </div>
@@ -328,7 +330,7 @@ document.write(`
 <span class="n">Node</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Node&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="max_flow"><a class="viewcode-back" href="../../api.html#aoc.flow.max_flow">[docs]</a><span class="k">def</span> <span class="nf">max_flow</span><span class="p">(</span>
+<div class="viewcode-block" id="max_flow"><a class="viewcode-back" href="../../graph.html#aoc.flow.max_flow">[docs]</a><span class="k">def</span> <span class="nf">max_flow</span><span class="p">(</span>
     <span class="n">nodes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span>
     <span class="n">nbs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]],</span>
     <span class="n">source</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>

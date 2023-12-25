@@ -167,7 +167,9 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">Application Programming Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../io.html">Input–Output Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../graph.html">Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interval.html">Interval Arithmetic</a></li>
 </ul>
 
     </div>
@@ -342,7 +344,7 @@ document.write(`
 <span class="n">BoardValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;BoardValue&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="visualise_board"><a class="viewcode-back" href="../../api.html#aoc.board.visualise_board">[docs]</a><span class="k">def</span> <span class="nf">visualise_board</span><span class="p">(</span>
+<div class="viewcode-block" id="visualise_board"><a class="viewcode-back" href="../../graph.html#aoc.board.visualise_board">[docs]</a><span class="k">def</span> <span class="nf">visualise_board</span><span class="p">(</span>
     <span class="n">board</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">marks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Node</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -373,7 +375,7 @@ document.write(`
         <span class="nb">print</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="find_in_board"><a class="viewcode-back" href="../../api.html#aoc.board.find_in_board">[docs]</a><span class="k">def</span> <span class="nf">find_in_board</span><span class="p">(</span>
+<div class="viewcode-block" id="find_in_board"><a class="viewcode-back" href="../../graph.html#aoc.board.find_in_board">[docs]</a><span class="k">def</span> <span class="nf">find_in_board</span><span class="p">(</span>
     <span class="n">board</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">BoardValue</span><span class="p">],</span>
     <span class="o">*</span><span class="n">values</span><span class="p">:</span> <span class="n">BoardValue</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
@@ -401,7 +403,7 @@ document.write(`
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">found</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)))</span></div>
 
 
-<div class="viewcode-block" id="neighbours"><a class="viewcode-back" href="../../api.html#aoc.board.neighbours">[docs]</a><span class="k">def</span> <span class="nf">neighbours</span><span class="p">(</span>
+<div class="viewcode-block" id="neighbours"><a class="viewcode-back" href="../../graph.html#aoc.board.neighbours">[docs]</a><span class="k">def</span> <span class="nf">neighbours</span><span class="p">(</span>
     <span class="n">board</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">BoardValue</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">allowed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">BoardValue</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nondiagonal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -451,7 +453,7 @@ document.write(`
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="turn_right"><a class="viewcode-back" href="../../api.html#aoc.board.turn_right">[docs]</a><span class="k">def</span> <span class="nf">turn_right</span><span class="p">(</span><span class="n">dr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<div class="viewcode-block" id="turn_right"><a class="viewcode-back" href="../../graph.html#aoc.board.turn_right">[docs]</a><span class="k">def</span> <span class="nf">turn_right</span><span class="p">(</span><span class="n">dr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;On a board, turn right.</span>
 
 <span class="sd">    We count positions in the following way::</span>
@@ -474,7 +476,7 @@ document.write(`
     <span class="k">return</span> <span class="n">_turn_right</span><span class="p">[</span><span class="n">dr</span><span class="p">,</span> <span class="n">dc</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="turn_left"><a class="viewcode-back" href="../../api.html#aoc.board.turn_left">[docs]</a><span class="k">def</span> <span class="nf">turn_left</span><span class="p">(</span><span class="n">dr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<div class="viewcode-block" id="turn_left"><a class="viewcode-back" href="../../graph.html#aoc.board.turn_left">[docs]</a><span class="k">def</span> <span class="nf">turn_left</span><span class="p">(</span><span class="n">dr</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">dc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;On a board, turn right. We count positions like we do for :func:`turn_right`.</span>
 
 <span class="sd">    Args:</span>
