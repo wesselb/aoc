@@ -10,10 +10,75 @@ from typing import (
     TypeVar,
 )
 
-__all__ = ["neighbours", "find_in_board", "turn_right", "visualise_board"]
+__all__ = [
+    "visualise_board",
+    "find_in_board",
+    "neighbours",
+    "turn_right",
+    "turn_left",
+]
 
 Node = Tuple[int, int]
 BoardValue = TypeVar("BoardValue")
+
+
+def visualise_board(
+    board: Dict[Node, str],
+    marks: Optional[Dict[str, Iterable[Node]]] = None,
+) -> None:
+    """Visualise a board.
+
+    Args:
+        board (dict[Node, str]): Board to visualise.
+        marks (dict[str, Iterable[Node]], optional): Draw markers at particular nodes.
+    """
+    min_r = min(r for r, _ in board.keys())
+    max_r = max(r for r, _ in board.keys())
+    min_c = min(c for _, c in board.keys())
+    max_c = max(c for _, c in board.keys())
+
+    if marks:
+        # Copy the board before mutation.
+        board = dict(board)
+        for m, nodes in marks.items():
+            for n in nodes:
+                board[n] = m
+
+    for r in range(min_r, max_r + 1):
+        for c in range(min_c, max_c + 1):
+            if (r, c) in board:
+                print(board[r, c], end="")
+            else:
+                print(" ", end="")
+        print()
+
+
+def find_in_board(
+    board: Dict[Node, BoardValue],
+    *values: BoardValue,
+) -> Tuple[Node, ...]:
+    r"""Find the node of certain board values.
+
+    If a value occurs multiple times, any of the corresponding nodes may be returned.
+
+    Args:
+        board (dict[Node, BoardValue]): Board.
+        \*values (BoardValue): Values to search for.
+
+    Raises:
+        AssertionError: If any of `values` cannot be found.
+
+    Returns:
+        tuple[Node, ...]: The nodes corresponding to `values`, in the same order.
+    """
+    found: Dict[int, Node] = {}
+    for n, v in board.items():
+        if v in values:
+            found[values.index(v)] = n
+    for i in range(len(values)):
+        if i not in found:
+            raise AssertionError(f"Could not find `{v}` in board.")
+    return tuple(found[i] for i in range(len(values)))
 
 
 def neighbours(
@@ -56,34 +121,6 @@ def neighbours(
             yield (r2, c2), 1
 
     return _neighbours
-
-
-def find_in_board(
-    board: Dict[Node, BoardValue],
-    *values: BoardValue,
-) -> Tuple[Node, ...]:
-    """Find the node of certain board values.
-
-    If a value occurs multiple times, any of the corresponding nodes may be returned.
-
-    Args:
-        board (dict[Node, BoardValue]): Board.
-        \\*values (BoardValue): Values to search for.
-
-    Raises:
-        AssertionError: If any of `values` cannot be found.
-
-    Returns:
-        tuple[Node, ...]: The nodes corresponding to `values`, in the same order.
-    """
-    found: Dict[int, Node] = {}
-    for n, v in board.items():
-        if v in values:
-            found[values.index(v)] = n
-    for i in range(len(values)):
-        if i not in found:
-            raise AssertionError(f"Could not find `{v}` in board.")
-    return tuple(found[i] for i in range(len(values)))
 
 
 _turn_right: Dict[Tuple[int, int], Tuple[int, int]] = {
@@ -130,34 +167,3 @@ def turn_left(dr: int, dc: int) -> Tuple[int, int]:
             * Delta in the column direction after turning left.
     """
     return _turn_right[-dr, -dc]
-
-
-def visualise_board(
-    board: Dict[Node, str],
-    marks: Optional[Dict[str, Iterable[Node]]] = None,
-) -> None:
-    """Visualise a board.
-
-    Args:
-        board (dict[Node, str]): Board to visualise.
-        marks (dict[str, Iterable[Node]], optional): Draw markers at particular nodes.
-    """
-    min_r = min(r for r, _ in board.keys())
-    max_r = max(r for r, _ in board.keys())
-    min_c = min(c for _, c in board.keys())
-    max_c = max(c for _, c in board.keys())
-
-    # Copy the board before mutation.
-    if marks:
-        board = dict(board)
-        for m, nodes in marks.items():
-            for n in nodes:
-                board[n] = m
-
-    for r in range(min_r, max_r + 1):
-        for c in range(min_c, max_c + 1):
-            if (r, c) in board:
-                print(board[r, c], end="")
-            else:
-                print(" ", end="")
-        print()

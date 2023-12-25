@@ -18,7 +18,7 @@ def max_flow(
     the Ford-Fulkerson algorithm.
 
     Args:
-        nodes (Set[Nodes]): Nodes of the graph.
+        nodes (set[Nodes]): Nodes of the graph.
         nbs (Callable[[Node], Iterable[tuple[Node, float]]]): Neighbourhood function.
             See :func:`.graph.shortest_path`.
         source (Node): Source node.
@@ -36,9 +36,10 @@ def max_flow(
     time.
 
     Returns:
-        float: Maximum flow value and minimum cut value.
-        Dict[Tuple[Node, Node], float]: A maximum flow.
-        Tuple[Set[Node], Set[Node]]: Node partition of a minimum cut.
+        tuple[float, dict[tuple[Node, Node], float], tuple[set[Node], set[Node]]]:
+            * Maximum flow value and minimum cut value.
+            * A maximum flow.
+            * Node partition of a minimum cut.
     """
     assert source != sink, "Source and sink are the same, but must be different."
 
