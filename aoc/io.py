@@ -19,11 +19,11 @@ def read_lines(file_name: str) -> List[str]:
         return [line.strip() for line in f.read().strip().splitlines()]
 
 
-def read_board(file_name: str) -> Tuple[int, int, Dict[Tuple[int, int], str]]:
+def read_board(lines: List[str]) -> Tuple[int, int, Dict[Tuple[int, int], str]]:
     """Read a board.
 
     Args:
-        file_name (str): File name.
+        lines (list[str]): Lines to parse the board from.
 
     Returns:
         tuple[int, int, dict[tuple[int, int], str]]:
@@ -31,7 +31,6 @@ def read_board(file_name: str) -> Tuple[int, int, Dict[Tuple[int, int], str]]:
             * Number of columns.
             * The board. A dictionary mapping the position to the value of the board.
     """
-    lines = read_lines(file_name)
     num_rows = len(lines)
     num_cols = len(lines[0])
     return (

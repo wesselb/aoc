@@ -11,6 +11,7 @@ from typing import (
 )
 
 __all__ = [
+    "print_board",
     "visualise_board",
     "find_in_board",
     "neighbours",
@@ -22,11 +23,11 @@ Node = Tuple[int, int]
 BoardValue = TypeVar("BoardValue")
 
 
-def visualise_board(
+def print_board(
     board: Dict[Node, str],
     marks: Optional[Dict[str, Iterable[Node]]] = None,
 ) -> None:
-    """Visualise a board.
+    """Print a board.
 
     Args:
         board (dict[Node, str]): Board to visualise.
@@ -51,6 +52,9 @@ def visualise_board(
             else:
                 print(" ", end="")
         print()
+
+
+visualise_board = print_board
 
 
 def find_in_board(

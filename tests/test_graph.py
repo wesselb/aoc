@@ -5,15 +5,17 @@ import aoc
 
 def test_shortest_path(write_file: Callable[[str, str], str]) -> None:
     _, _, board = aoc.read_board(
-        write_file(
-            "input.txt",
-            """
+        aoc.read_lines(
+            write_file(
+                "input.txt",
+                """
             S.....
             .##..#
             .#....
             .#.###
             .#...E
             """,
+            )
         )
     )
     start, end = aoc.find_in_board(board, "S", "E")
@@ -46,15 +48,17 @@ def test_shortest_path(write_file: Callable[[str, str], str]) -> None:
 
 def test_reduce_edges(write_file: Callable[[str, str], str]) -> None:
     _, _, board = aoc.read_board(
-        write_file(
-            "input.txt",
-            """
+        aoc.read_lines(
+            write_file(
+                "input.txt",
+                """
             S.....
             .##..#
             .#....
             .#.###
             .#...E
             """,
+            )
         )
     )
     start, end = aoc.find_in_board(board, "S", "E")

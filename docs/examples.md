@@ -19,7 +19,8 @@ You can do this in the following way:
 ```python
 import aoc
 
-R, C, board = aoc.read_board("input.txt")
+lines = aoc.read_lines("input.txt")
+R, C, board = aoc.read_board(lines)
 
 start, end = aoc.find_in_board(board, "S", "E")
 
@@ -37,7 +38,7 @@ while True:
         board[n] = "P"
 
 print()
-aoc.visualise_board(board)
+aoc.print_board(board)
 ```
 
 Output:
