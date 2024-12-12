@@ -9,12 +9,12 @@ def test_shortest_path(write_file: Callable[[str, str], str]) -> None:
             write_file(
                 "input.txt",
                 """
-            S.....
-            .##..#
-            .#....
-            .#.###
-            .#...E
-            """,
+                S.....
+                .##..#
+                .#....
+                .#.###
+                .#...E
+                """,
             )
         )
     )
@@ -52,12 +52,12 @@ def test_reduce_edges(write_file: Callable[[str, str], str]) -> None:
             write_file(
                 "input.txt",
                 """
-            S.....
-            .##..#
-            .#....
-            .#.###
-            .#...E
-            """,
+                S.....
+                .##..#
+                .#....
+                .#.###
+                .#...E
+                """,
             )
         )
     )

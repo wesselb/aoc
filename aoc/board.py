@@ -17,6 +17,7 @@ __all__ = [
     "neighbours",
     "turn_right",
     "turn_left",
+    "neighbours_boundary",
 ]
 
 Node = Tuple[int, int]
@@ -127,14 +128,6 @@ def neighbours(
     return _neighbours
 
 
-_turn_right: Dict[Tuple[int, int], Tuple[int, int]] = {
-    (1, 0): (0, -1),
-    (0, -1): (-1, 0),
-    (-1, 0): (0, 1),
-    (0, 1): (1, 0),
-}
-
-
 def turn_right(dr: int, dc: int) -> Tuple[int, int]:
     """On a board, turn right.
 
@@ -155,7 +148,7 @@ def turn_right(dr: int, dc: int) -> Tuple[int, int]:
             * Delta in the row direction after turning right.
             * Delta in the column direction after turning right.
     """
-    return _turn_right[dr, dc]
+    return (dc, -dr)
 
 
 def turn_left(dr: int, dc: int) -> Tuple[int, int]:
@@ -170,4 +163,95 @@ def turn_left(dr: int, dc: int) -> Tuple[int, int]:
             * Delta in the row direction after turning left.
             * Delta in the column direction after turning left.
     """
-    return _turn_right[-dr, -dc]
+    return (-dc, dr)
+
+
+BoundaryPoint = Tuple[Node, Node]
+
+
+def neighbours_boundary(
+    in_region: Optional[Callable[[Node], bool]] = None,
+) -> Callable[[BoundaryPoint], Generator[Tuple[BoundaryPoint, Literal[1]], None, None]]:
+    """Construct a function that finds all neighbouring boundary points.
+
+    This function can be given as the argument `nbs` to :func:`aoc.graph.shortest_path`.
+
+    Args:
+        in_region (Callable[[Node], bool], optional): A function that checks whether
+            a node is in the region of the boundary.
+
+    Returns:
+        Callable[[BoundaryPoint], Generator[tuple[BoundaryPoint, One], None, None]]:
+            The neighbour function for boundary points. Takes in a boundary point and
+            generates tuples of boundary points and weights. The weights are always
+            equal to one.
+    """
+
+    def _neighbours(
+        b: BoundaryPoint,
+    ) -> Generator[Tuple[BoundaryPoint, Literal[1]], None, None]:
+        if in_region:
+            in1, in2 = in_region(b[0]), in_region(b[1])
+            if not (in1 ^ in2):
+                raise ValueError("Given point is not in the boundary.")
+
+        def in_boundary(b2: BoundaryPoint) -> bool:
+            """Check whether `b2` is in the boundary."""
+            if not in_region:
+                # Just return all possibilities.
+                return True
+            return in_region(b2[0]) == in1 and in_region(b2[1]) == in2
+
+        (r1, c1), (r2, c2) = b
+
+        # Extend edge in both ways.
+        dr, dc = r2 - r1, c2 - c1
+        if dc == 0:
+            # In the same column, so vector is vertical, meaning that we need to move
+            # it left and right.
+            assert abs(dr) == 1
+            b2 = (r1, c1 - 1), (r2, c2 - 1)
+            if in_boundary(b2):
+                yield b2, 1
+            b2 = (r1, c1 + 1), (r2, c2 + 1)
+            if in_boundary(b2):
+                yield b2, 1
+        else:
+            # In the same row, so vector is horizontal, meaning that we need to move
+            # it up and down.
+            assert abs(dc) == 1
+            b2 = (r1 - 1, c1), (r2 - 1, c2)
+            if in_boundary(b2):
+                yield b2, 1
+            b2 = (r1 + 1, c1), (r2 + 1, c2)
+            if in_boundary(b2):
+                yield b2, 1
+
+        # Attempt to turn around coordinate 1, so coordinate 1 stays.
+        dr, dc = r2 - r1, c2 - c1
+        for dr2, dc2 in [turn_right(dr, dc), turn_left(dr, dc)]:
+            bm = (r1, c1), (r1 + (dr2 + dr), c1 + (dc2 + dc))
+            b2 = (r1, c1), (r1 + dr2, c1 + dc2)
+            if in_boundary(b2):
+                # If this coordinate is not in the region, then the middle point must
+                # also be in the boundary. Otherwise, we might leave the boundary and
+                # come back. This is not an issue if this coordinate is in the region.
+                if in_region and not in1:
+                    if in_boundary(bm):
+                        yield b2, 1
+                else:
+                    yield b2, 1
+
+        # Attempt to turn around coordinate 2, so coordinate 2 stays.
+        dr, dc = r1 - r2, c1 - c2
+        for dr2, dc2 in [turn_right(dr, dc), turn_left(dr, dc)]:
+            bm = (r2 + (dr2 + dr), c2 + (dc2 + dc)), (r2, c2)
+            b2 = (r2 + dr2, c2 + dc2), (r2, c2)
+            if in_boundary(b2):
+                if in_region and not in2:
+                    if in_boundary(bm):
+                        yield b2, 1
+                else:
+                    yield b2, 1
+
+    return _neighbours
