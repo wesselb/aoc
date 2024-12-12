@@ -48,7 +48,7 @@ def shortest_path(
             monotonic, you should set `revisit` to `True` to still find the optimal
             path.
         revisit (bool, optional): Allow the algorithm to revisit the same node more
-            then once. Defaults to `False`.
+            than once. Defaults to `False`.
         seen (set[Node], optional): Consider these nodes already seen.
 
     In this implementation of Dijkstra's algorithm, `n1` is chosen such that (a) `n1`
@@ -78,7 +78,7 @@ def shortest_path(
     above. The condition `h1 - h2 <= dist(n2 -> n1)` says that, by going from `n2` to
     `n1`, the heuristic value never decreases by more than the shortest distance from
     `n2` to `n1`. If `n1` and `n2` are connected via an edge, this means that the
-    heuristic value never decrease by more than the edge weight. This is the stated
+    heuristic value never decreases by more than the edge weight. This is the stated
     monotonicity condition.
 
     If the heuristic is not monotonic, you need to search over all possible paths by
@@ -110,7 +110,7 @@ def shortest_path(
             seen.add(n1)
 
         for n2, w12 in nbs(n1):
-            assert w12, f"Weight must be non-negative: {w12}."
+            assert w12 >= 0, f"Weight must be non-negative: {w12}."
 
             if n2 in seen:
                 continue
