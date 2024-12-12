@@ -20,7 +20,7 @@ You can do this in the following way:
 import aoc
 
 lines = aoc.read_lines("input.txt")
-R, C, board = aoc.read_board(lines)
+R, C, board = aoc.parse_board(lines)
 
 start, end = aoc.find_in_board(board, "S", "E")
 
