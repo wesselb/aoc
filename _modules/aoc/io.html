@@ -320,9 +320,15 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for aoc.io</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;read_lines&quot;</span><span class="p">,</span> <span class="s2">&quot;read_board&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;read_lines&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_board&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parse_board&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parse_nums&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <div class="viewcode-block" id="read_lines"><a class="viewcode-back" href="../../io.html#aoc.io.read_lines">[docs]</a><span class="k">def</span> <span class="nf">read_lines</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -341,11 +347,11 @@ document.write(`
         <span class="k">return</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()]</span></div>
 
 
-<div class="viewcode-block" id="read_board"><a class="viewcode-back" href="../../io.html#aoc.io.read_board">[docs]</a><span class="k">def</span> <span class="nf">read_board</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a board.</span>
+<div class="viewcode-block" id="parse_board"><a class="viewcode-back" href="../../io.html#aoc.io.parse_board">[docs]</a><span class="k">def</span> <span class="nf">parse_board</span><span class="p">(</span><span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a board.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        file_name (str): File name.</span>
+<span class="sd">        lines (list[str]): Lines to parse the board from.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple[int, int, dict[tuple[int, int], str]]:</span>
@@ -353,7 +359,6 @@ document.write(`
 <span class="sd">            * Number of columns.</span>
 <span class="sd">            * The board. A dictionary mapping the position to the value of the board.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="n">read_lines</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
     <span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
     <span class="n">num_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">return</span> <span class="p">(</span>
@@ -361,6 +366,31 @@ document.write(`
         <span class="n">num_cols</span><span class="p">,</span>
         <span class="p">{(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span> <span class="n">lines</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rows</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cols</span><span class="p">)},</span>
     <span class="p">)</span></div>
+
+
+<span class="n">read_board</span> <span class="o">=</span> <span class="n">parse_board</span>
+
+
+<div class="viewcode-block" id="parse_nums"><a class="viewcode-back" href="../../io.html#aoc.io.parse_nums">[docs]</a><span class="k">def</span> <span class="nf">parse_nums</span><span class="p">(</span><span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse sequences of numbers from lines, creating lists of integers.</span>
+
+<span class="sd">    For every newline, group the parsed sequences into a new group.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lines (list[str]): Lines to parse the numbers from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[list[list[int]]]: Groups of integer sequences.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">blocks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[[]]</span>
+    <span class="k">while</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">continue</span>
+        <span class="n">blocks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[^0-9]&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">blocks</span></div>
 </pre></div>
 
                 </article>

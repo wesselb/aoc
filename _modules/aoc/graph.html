@@ -370,7 +370,7 @@ document.write(`
 <span class="sd">            monotonic, you should set `revisit` to `True` to still find the optimal</span>
 <span class="sd">            path.</span>
 <span class="sd">        revisit (bool, optional): Allow the algorithm to revisit the same node more</span>
-<span class="sd">            then once. Defaults to `False`.</span>
+<span class="sd">            than once. Defaults to `False`.</span>
 <span class="sd">        seen (set[Node], optional): Consider these nodes already seen.</span>
 
 <span class="sd">    In this implementation of Dijkstra&#39;s algorithm, `n1` is chosen such that (a) `n1`</span>
@@ -400,7 +400,7 @@ document.write(`
 <span class="sd">    above. The condition `h1 - h2 &lt;= dist(n2 -&gt; n1)` says that, by going from `n2` to</span>
 <span class="sd">    `n1`, the heuristic value never decreases by more than the shortest distance from</span>
 <span class="sd">    `n2` to `n1`. If `n1` and `n2` are connected via an edge, this means that the</span>
-<span class="sd">    heuristic value never decrease by more than the edge weight. This is the stated</span>
+<span class="sd">    heuristic value never decreases by more than the edge weight. This is the stated</span>
 <span class="sd">    monotonicity condition.</span>
 
 <span class="sd">    If the heuristic is not monotonic, you need to search over all possible paths by</span>
@@ -432,7 +432,7 @@ document.write(`
             <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">n2</span><span class="p">,</span> <span class="n">w12</span> <span class="ow">in</span> <span class="n">nbs</span><span class="p">(</span><span class="n">n1</span><span class="p">):</span>
-            <span class="k">assert</span> <span class="n">w12</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Weight must be non-negative: </span><span class="si">{</span><span class="n">w12</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="k">assert</span> <span class="n">w12</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Weight must be non-negative: </span><span class="si">{</span><span class="n">w12</span><span class="si">}</span><span class="s2">.&quot;</span>
 
             <span class="k">if</span> <span class="n">n2</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                 <span class="k">continue</span>
