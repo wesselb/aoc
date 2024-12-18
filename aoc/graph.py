@@ -24,7 +24,7 @@ def shortest_path(
     heuristic: Callable[[Node], float] = lambda n: 0,
     revisit: bool = False,
     seen: Optional[Set[Node]] = None,
-) -> Tuple[Dict[Node, float], Dict[Node, list[Node]]]:
+) -> Tuple[Dict[Node, float], Dict[Node, List[Node]]]:
     """Dijkstra's algorithm to compute all shortest paths starting at `start`.
 
     All edge weights must be non-negative. You can also use this function to efficiently
