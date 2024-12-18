@@ -369,8 +369,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graphs-which-are-grids-boards">Graphs Which Are Grids: Boards</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-graph-algorithms">General Graph Algorithms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.board">Graphs Which Are Grids: Boards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.graph">General Graph Algorithms</a></li>
 </ul>
             </nav>
         </div>
@@ -384,11 +384,323 @@ document.write(`
                   
   <section id="graphs">
 <h1>Graphs<a class="headerlink" href="#graphs" title="Permalink to this heading">#</a></h1>
-<section id="graphs-which-are-grids-boards">
-<h2>Graphs Which Are Grids: Boards<a class="headerlink" href="#graphs-which-are-grids-boards" title="Permalink to this heading">#</a></h2>
+<section id="module-aoc.board">
+<span id="graphs-which-are-grids-boards"></span><h2>Graphs Which Are Grids: Boards<a class="headerlink" href="#module-aoc.board" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.find_in_board">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">find_in_board</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">BoardValue</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BoardValue</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/board.html#find_in_board"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.find_in_board" title="Permalink to this definition">#</a></dt>
+<dd><p>Find the node of certain board values.</p>
+<p>If a value occurs multiple times, any of the corresponding nodes may be returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>dict</em><em>[</em><em>Node</em><em>, </em><em>BoardValue</em><em>]</em>) – Board.</p></li>
+<li><p><strong>*values</strong> (<em>BoardValue</em>) – Values to search for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If any of <cite>values</cite> cannot be found.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The nodes corresponding to <cite>values</cite>, in the same order.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[Node, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.neighbours">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">neighbours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">BoardValue</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">BoardValue</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nondiagonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/board.html#neighbours"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.neighbours" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a function that can be given as the argument <cite>nbs</cite> to
+<a class="reference internal" href="#aoc.graph.shortest_path" title="aoc.graph.shortest_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">aoc.graph.shortest_path()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>dict</em><em>[</em><em>Node</em><em>, </em><em>BoardValue</em><em>]</em><em>, </em><em>optional</em>) – Board.</p></li>
+<li><p><strong>allowed</strong> (<em>set</em><em>[</em><em>BoardValue</em><em>]</em><em>, </em><em>optional</em>) – Board values that we’re allowed to go to.</p></li>
+<li><p><strong>nondiagonal</strong> (<em>bool</em><em>, </em><em>optional</em>) – Can we make non-diagonal moves? Defaults to
+allowing non-diagonal moves.</p></li>
+<li><p><strong>diagonal</strong> (<em>bool</em><em>, </em><em>optional</em>) – Can we make diagonal moves? Defaults to <em>not</em>
+allowing diagonal moves.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The neighbour function. Takes in a node and generates tuples of neighbours
+and weights of the edges to those neighbours.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[Node], Generator[tuple[Node, Literal[1]], None, None]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.neighbours_boundary">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">neighbours_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Generator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/board.html#neighbours_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.neighbours_boundary" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a function that finds all neighbouring boundary points.</p>
+<p>A boundary point is represented as a two-node tuple, where the first point is
+inside the region and the second point outside. The normal vector for this boundary
+point is the second node minus the first.</p>
+<p>The algorithm to find all neighbouring boundary points works as follows. First,
+the boundary is moved orthogonally to the normal vector. This amounts to an
+_extension_ of the boundary. Second, algorithm explores all possible folds.
+These are generated by fixing either the first or second node, and rotating
+the non-fixed node around the fixed node by 90 degrees in any direction. During
+the rotation, one node must remain inside the region, to ensure that we don’t
+leave the boundary. It might happen that, at 45 degrees, both points are inside
+the region. This algorithm should work in any number of dimensions, but is here
+only implemented for grids.</p>
+<p>This function can be given as the argument <cite>nbs</cite> to <a class="reference internal" href="#aoc.graph.shortest_path" title="aoc.graph.shortest_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">aoc.graph.shortest_path()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>in_region</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – A function that checks whether
+a node is in the region of the boundary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The neighbour function for boundary points. Takes in a boundary point and
+generates tuples of boundary points and weights. The weights are always
+equal to one.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable[[BoundaryPoint], Generator[tuple[BoundaryPoint, One], None, None]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.print_board">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">print_board</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/aoc/board.html#print_board"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.print_board" title="Permalink to this definition">#</a></dt>
+<dd><p>Print a board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>dict</em><em>[</em><em>Node</em><em>, </em><em>str</em><em>]</em>) – Board to visualise.</p></li>
+<li><p><strong>marks</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Iterable</em><em>[</em><em>Node</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Draw markers at particular nodes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.turn_left">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">turn_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/board.html#turn_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.turn_left" title="Permalink to this definition">#</a></dt>
+<dd><p>On a board, turn right. We count positions like we do for <a class="reference internal" href="#aoc.board.turn_right" title="aoc.board.turn_right"><code class="xref py py-func docutils literal notranslate"><span class="pre">turn_right()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dr</strong> (<em>int</em>) – Delta in the row direction.</p></li>
+<li><p><strong>dc</strong> (<em>int</em>) – Delta in the column direction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Delta in the row direction after turning left.</p></li>
+<li><p>Delta in the column direction after turning left.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.turn_right">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">turn_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/board.html#turn_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.board.turn_right" title="Permalink to this definition">#</a></dt>
+<dd><p>On a board, turn right.</p>
+<p>We count positions in the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="mi">0123</span>
+<span class="mi">0</span> <span class="o">....</span>
+<span class="mi">1</span> <span class="o">....</span>
+<span class="mi">2</span> <span class="o">....</span>
+<span class="mi">3</span> <span class="o">....</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dr</strong> (<em>int</em>) – Delta in the row direction.</p></li>
+<li><p><strong>dc</strong> (<em>int</em>) – Delta in the column direction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Delta in the row direction after turning right.</p></li>
+<li><p>Delta in the column direction after turning right.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.board.visualise_board">
+<span class="sig-prename descclassname"><span class="pre">aoc.board.</span></span><span class="sig-name descname"><span class="pre">visualise_board</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">marks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#aoc.board.visualise_board" title="Permalink to this definition">#</a></dt>
+<dd><p>Print a board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>dict</em><em>[</em><em>Node</em><em>, </em><em>str</em><em>]</em>) – Board to visualise.</p></li>
+<li><p><strong>marks</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Iterable</em><em>[</em><em>Node</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Draw markers at particular nodes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="general-graph-algorithms">
-<h2>General Graph Algorithms<a class="headerlink" href="#general-graph-algorithms" title="Permalink to this heading">#</a></h2>
+<section id="module-aoc.graph">
+<span id="general-graph-algorithms"></span><h2>General Graph Algorithms<a class="headerlink" href="#module-aoc.graph" title="Permalink to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.graph.reduce_edges">
+<span class="sig-prename descclassname"><span class="pre">aoc.graph.</span></span><span class="sig-name descname"><span class="pre">reduce_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irreducible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/graph.html#reduce_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.graph.reduce_edges" title="Permalink to this definition">#</a></dt>
+<dd><p>Reduce a graph by repeatedly removing nodes with only two neighbours and adding
+the sums of the edge weights.</p>
+<p>The underlying graph must be undirected and edge weights must be non-negative.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> (<em>Iterable</em><em>[</em><em>Node</em><em>]</em>) – Nodes of the graph.</p></li>
+<li><p><strong>irreducible</strong> (<em>Set</em><em>[</em><em>Node</em><em>]</em>) – Irreducible nodes.</p></li>
+<li><p><strong>nbs</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>Iterable</em><em>[</em><em>Tuple</em><em>[</em><em>Node</em><em>, </em><em>float</em><em>]</em><em>]</em><em>]</em>) – Neighbourhood function.
+See <a class="reference internal" href="#aoc.graph.shortest_path" title="aoc.graph.shortest_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">shortest_path()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>Reduced node set, which is guaranteed to include <cite>irreducible</cite>.</p></li>
+<li><p>Neighbourhood function of the reduced graph.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[set[Node], Callable[[Node], Iterable[Tuple[Node, float]]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="aoc.graph.shortest_path">
+<span class="sig-prename descclassname"><span class="pre">aoc.graph.</span></span><span class="sig-name descname"><span class="pre">shortest_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">start:</span> <span class="pre">~aoc.graph.Node,</span> <span class="pre">nbs:</span> <span class="pre">~typing.Callable[[~aoc.graph.Node],</span> <span class="pre">~typing.Iterator[~typing.Tuple[~aoc.graph.Node,</span> <span class="pre">float]]],</span> <span class="pre">callback:</span> <span class="pre">~typing.Callable[[~aoc.graph.Node,</span> <span class="pre">float],</span> <span class="pre">bool]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;,</span> <span class="pre">heuristic:</span> <span class="pre">~typing.Callable[[~aoc.graph.Node],</span> <span class="pre">float]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;,</span> <span class="pre">revisit:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">seen:</span> <span class="pre">~typing.Optional[~typing.Set[~aoc.graph.Node]]</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/graph.html#shortest_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.graph.shortest_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Dijkstra’s algorithm to compute all shortest paths starting at <cite>start</cite>.</p>
+<p>All edge weights must be non-negative. You can also use this function to efficiently
+perform a BFS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reachable</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">shortest_path</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">nbs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<em>Node</em>) – Start.</p></li>
+<li><p><strong>nbs</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>Iterator</em><em>[</em><em>tuple</em><em>[</em><em>Node</em><em>, </em><em>float</em><em>]</em><em>]</em><em>]</em>) – The neighbourhood function
+of the graph: a function that takes in a node and iterates over all
+neighbours, giving tuples containing the neighbour and the weight of the
+edge to that neighbour.</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>, </em><em>float</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – A function that is called at
+every iteration with the current node and the true shortest path distance to
+that node. If this function returns <cite>True</cite>, the algorithm will stop.
+Otherwise, the algorithm will continue.</p></li>
+<li><p><strong>heuristic</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – An heuristic that needs to lower
+bounds the distance to the end node. It should also be monotonic, meaning
+that it never decreases by more than the edge weight. If it is not
+monotonic, you should set <cite>revisit</cite> to <cite>True</cite> to still find the optimal
+path.</p></li>
+<li><p><strong>revisit</strong> (<em>bool</em><em>, </em><em>optional</em>) – Allow the algorithm to revisit the same node more
+than once. Defaults to <cite>False</cite>.</p></li>
+<li><p><strong>seen</strong> (<em>set</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>optional</em>) – Consider these nodes already seen.</p></li>
+</ul>
+</dd>
+</dl>
+<p>In this implementation of Dijkstra’s algorithm, <cite>n1</cite> is chosen such that (a) <cite>n1</cite>
+is unseen and (b) <cite>n1</cite> has lowest <cite>dist[n1] = d1</cite>. By the induction hypothesis, for
+all seen nodes <cite>n2</cite>, <cite>dist[n2]</cite> is the shortest distance from <cite>start</cite> to <cite>n2</cite>. It is
+now true that <cite>d1</cite> is the shortest distance from <cite>start</cite> to <cite>n1</cite>. To prove this, let
+us call unseen nodes directly connected to seen nodes <em>fronteer nodes</em>. Consider a
+path from <cite>start</cite> to <cite>n1</cite> that has distance less than <cite>d1</cite>. If it directly connects
+from <cite>n1</cite> to seen nodes, by construction of the algorithm, its distance must be
+equal to <cite>d1</cite>. If it does not directly connect from <cite>n1</cite> to seen nodes, it must
+eventually enter the seen nodes via some fronteer node <cite>n2</cite>. However,
+<cite>dist[n2] = d2 &gt;= d1</cite> and edges are non-negative, so any path from <cite>start</cite> to <cite>n1</cite>
+via <cite>n2</cite> must have distance more than <cite>d1</cite>. We conclude that <cite>d1</cite> truly is the
+shortest distance from <cite>start</cite> to <cite>n1</cite>.</p>
+<p>For this argument to work, <cite>n1</cite> does not exactly have to be chosen such that <cite>d1</cite>
+is smallest. For all other fronteer nodes <cite>n2</cite>, <cite>d1</cite> just needs to be smaller than
+<cite>d2</cite> plus the shortest distance from <cite>n2</cite> to <cite>n1</cite>. Now suppose that we instead
+choose <cite>n1</cite> according to smallest <cite>d1 + h1</cite> where <cite>h1 = heuristic(n1)</cite> and
+<cite>h2 = heuristic(n2)</cite>. Then</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">d2</span> <span class="o">+</span> <span class="n">dist</span><span class="p">(</span><span class="n">n2</span> <span class="o">-&gt;</span> <span class="n">n1</span><span class="p">))</span>
+    <span class="o">=</span>  <span class="p">(</span><span class="n">d2</span> <span class="o">+</span> <span class="n">h2</span> <span class="o">-</span> <span class="n">h2</span> <span class="o">+</span> <span class="n">dist</span><span class="p">(</span><span class="n">n2</span> <span class="o">-&gt;</span> <span class="n">n1</span><span class="p">))</span>
+    <span class="o">&gt;=</span> <span class="p">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">h1</span> <span class="o">-</span> <span class="n">h2</span> <span class="o">+</span> <span class="n">dist</span><span class="p">(</span><span class="n">n2</span> <span class="o">-&gt;</span> <span class="n">n1</span><span class="p">))</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Hence, if <cite>h2 + dist(n2 -&gt; n1) &gt;= h1</cite>, then we can complete the induction step as
+above. The condition <cite>h1 - h2 &lt;= dist(n2 -&gt; n1)</cite> says that, by going from <cite>n2</cite> to
+<cite>n1</cite>, the heuristic value never decreases by more than the shortest distance from
+<cite>n2</cite> to <cite>n1</cite>. If <cite>n1</cite> and <cite>n2</cite> are connected via an edge, this means that the
+heuristic value never decreases by more than the edge weight. This is the stated
+monotonicity condition.</p>
+<p>If the heuristic is not monotonic, you need to search over all possible paths by
+allowed the algorithm to revisit the same node more than once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>For every node, the shortest path distance to that node.</p></li>
+<li><p>For every node except <cite>start</cite>, the previous nodes in all shortest paths to
+that node.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[dict[Node, float], dict[Node, list[Node]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-aoc.flow"></span><dl class="py function">
+<dt class="sig sig-object py" id="aoc.flow.max_flow">
+<span class="sig-prename descclassname"><span class="pre">aoc.flow.</span></span><span class="sig-name descname"><span class="pre">max_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sink</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Node</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/flow.html#max_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.flow.max_flow" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the maximum flow and minimum cut with Edmond Karp’s variation of
+the Ford-Fulkerson algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> (<em>set</em><em>[</em><em>Nodes</em><em>]</em>) – Nodes of the graph.</p></li>
+<li><p><strong>nbs</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>Iterable</em><em>[</em><em>tuple</em><em>[</em><em>Node</em><em>, </em><em>float</em><em>]</em><em>]</em><em>]</em>) – Neighbourhood function.
+See <a class="reference internal" href="#aoc.graph.shortest_path" title="aoc.graph.shortest_path"><code class="xref py py-func docutils literal notranslate"><span class="pre">graph.shortest_path()</span></code></a>.</p></li>
+<li><p><strong>source</strong> (<em>Node</em>) – Source node.</p></li>
+<li><p><strong>sink</strong> (<em>Node</em>) – Sink node.</p></li>
+</ul>
+</dd>
+</dl>
+<p>It is clear that every cut value upper bounds every flow value. Consider the maximum
+flow. Then all nodes reachable from <cite>source</cite> in the residual graph define a cut with
+value equal to the maximum flow value. Therefore, the maximum flow value is equal
+to the minimum cut value.</p>
+<p>To find the maximum flow, we iteratively find paths along which we can increase the
+flow using a BFS. BFS will find the path with the least number of edges in O(E)
+time, and it will never choose the same path twice. Since there are at most
+O(V E) paths along which to increase the flow, this algorithm runs in O(V E^2)
+time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>Maximum flow value and minimum cut value.</p></li>
+<li><p>A maximum flow.</p></li>
+<li><p>Node partition of a minimum cut.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[float, dict[tuple[Node, Node], float], tuple[set[Node], set[Node]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
@@ -455,8 +767,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graphs-which-are-grids-boards">Graphs Which Are Grids: Boards</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-graph-algorithms">General Graph Algorithms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.board">Graphs Which Are Grids: Boards</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.graph">General Graph Algorithms</a></li>
 </ul>
   </nav></div>
 
