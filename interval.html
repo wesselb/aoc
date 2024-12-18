@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'interval';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utility" href="util.html" />
     <link rel="prev" title="Graphs" href="graph.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -172,6 +173,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="io.html">Input–Output Operations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graph.html">Graphs</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Interval Arithmetic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">Utility</a></li>
 </ul>
 
     </div>
@@ -367,7 +369,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.interval">Interval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interval">Interval</a></li>
 </ul>
             </nav>
         </div>
@@ -381,50 +383,8 @@ document.write(`
                   
   <section id="interval-arithmetic">
 <h1>Interval Arithmetic<a class="headerlink" href="#interval-arithmetic" title="Permalink to this heading">#</a></h1>
-<section id="module-aoc.interval">
-<span id="interval"></span><h2>Interval<a class="headerlink" href="#module-aoc.interval" title="Permalink to this heading">#</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="aoc.interval.intervals_diff">
-<span class="sig-prename descclassname"><span class="pre">aoc.interval.</span></span><span class="sig-name descname"><span class="pre">intervals_diff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ints1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ints2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/interval.html#intervals_diff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.interval.intervals_diff" title="Permalink to this definition">#</a></dt>
-<dd><p>For two sets of disjoint open-closed intervals on the real line <cite>ints1</cite> and
-<cite>ints2</cite>, compute the set difference <cite>ints1 - ints2</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ints1</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – First set of intervals.</p></li>
-<li><p><strong>ints2</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – Second set of intervals.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><cite>ints1 - ints2</cite>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="aoc.interval.intervals_intersect">
-<span class="sig-prename descclassname"><span class="pre">aoc.interval.</span></span><span class="sig-name descname"><span class="pre">intervals_intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ints1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ints2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/interval.html#intervals_intersect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.interval.intervals_intersect" title="Permalink to this definition">#</a></dt>
-<dd><p>For two sets of disjoint open-closed intervals on the real line <cite>ints1</cite> and
-<cite>ints2</cite>, compute the intersection <cite>ints1 &amp; ints2</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ints1</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – First set of intervals.</p></li>
-<li><p><strong>ints2</strong> (set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]) – Second set of intervals.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><cite>ints1 &amp; ints2</cite>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>set[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="interval">
+<h2>Interval<a class="headerlink" href="#interval" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -467,6 +427,15 @@ document.write(`
         <p class="prev-next-title">Graphs</p>
       </div>
     </a>
+    <a class="right-next"
+       href="util.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Utility</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -482,7 +451,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-aoc.interval">Interval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interval">Interval</a></li>
 </ul>
   </nav></div>
 
