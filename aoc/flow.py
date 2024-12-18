@@ -66,7 +66,7 @@ def max_flow(
             # Found an augmenting path.
             path, n = [sink], sink
             while n != source:
-                n = prev[n]
+                n = prev[n][0]
                 path.append(n)
             path = list(reversed(path))
 

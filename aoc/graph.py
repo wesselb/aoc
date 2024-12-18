@@ -24,7 +24,7 @@ def shortest_path(
     heuristic: Callable[[Node], float] = lambda n: 0,
     revisit: bool = False,
     seen: Optional[Set[Node]] = None,
-) -> Tuple[Dict[Node, float], Dict[Node, Node]]:
+) -> Tuple[Dict[Node, float], Dict[Node, list[Node]]]:
     """Dijkstra's algorithm to compute all shortest paths starting at `start`.
 
     All edge weights must be non-negative. You can also use this function to efficiently
@@ -85,13 +85,13 @@ def shortest_path(
     allowed the algorithm to revisit the same node more than once.
 
     Returns:
-        tuple[dict[Node, float], dict[Node, Node]]:
+        tuple[dict[Node, float], dict[Node, list[Node]]]:
             * For every node, the shortest path distance to that node.
-            * For every node except `start`, the previous node in the shortest path to
+            * For every node except `start`, the previous nodes in all shortest paths to
               that node.
     """
     dist: Dict[Node, float] = {start: 0}
-    prev: Dict[Node, Node] = {}
+    prev: Dict[Node, list[Node]] = {}
     seen = set() if seen is None else seen
 
     q: List[Tuple[float, Node]] = [(heuristic(start), start)]
@@ -116,9 +116,15 @@ def shortest_path(
                 continue
 
             alt = d1 + w12
-            if alt < dist.get(n2, float("inf")):
-                dist[n2] = alt
-                prev[n2] = n1
+            d2 = dist.get(n2, float("inf"))
+            if alt <= d2:
+                if alt < d2:
+                    # It is the optimal path.
+                    dist[n2] = alt
+                    prev[n2] = [n1]
+                elif alt == d2:
+                    # It is an alternative optimal path. Save the alternative.
+                    prev[n2].append(n1)
                 heapq.heappush(q, (dist[n2] + heuristic(n2), n2))
 
     return dist, prev

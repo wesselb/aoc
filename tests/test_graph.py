@@ -30,7 +30,7 @@ def test_shortest_path(write_file: Callable[[str, str], str]) -> None:
     n = end
     while n != start:
         path.insert(0, n)
-        n = prev[n]
+        n = prev[n][0]
     assert path == [
         (0, 1),
         (0, 2),
@@ -67,5 +67,7 @@ def test_reduce_edges(write_file: Callable[[str, str], str]) -> None:
     _, nbs, aoc.reduce_edges(nodes, {start, end}, nbs)
     dist, prev = aoc.shortest_path(start, nbs)
 
+    # Check that the edges are reduced.
+    assert len(list(nbs(start))) == 2
     # Check distance.
     assert dist[end] == 11

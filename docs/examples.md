@@ -28,10 +28,10 @@ dist, prev = aoc.shortest_path(start, aoc.neighbours(board, allowed={".", "E"}))
 
 print("Distance:", dist[end])
 
-# Mark the shortest path with `P`, but not marking the start and end.
+# Mark a shortest path with `P`, but not marking the start and end.
 n = end
 while True:
-    n = prev[n]
+    n = prev[n][0]
     if n == start: 
         break
     else:

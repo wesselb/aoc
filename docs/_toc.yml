@@ -8,3 +8,4 @@ chapters:
 - file: io
 - file: graph
 - file: interval
+- file: util

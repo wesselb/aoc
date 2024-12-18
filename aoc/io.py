@@ -67,5 +67,5 @@ def parse_nums(lines: List[str]) -> List[List[List[int]]]:
         if not line:
             blocks.append([])
             continue
-        blocks[-1].append([int(x) for x in re.split("[^0-9]", line)])
+        blocks[-1].append([int(x) for x in re.split(r"[^\-0-9]+", line) if x])
     return blocks
