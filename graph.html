@@ -557,6 +557,30 @@ equal to one.</p>
 <section id="module-aoc.graph">
 <span id="general-graph-algorithms"></span><h2>General Graph Algorithms<a class="headerlink" href="#module-aoc.graph" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="aoc.graph.backtrace">
+<span class="sig-prename descclassname"><span class="pre">aoc.graph.</span></span><span class="sig-name descname"><span class="pre">backtrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/graph.html#backtrace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.graph.backtrace" title="Permalink to this definition">#</a></dt>
+<dd><p>Backtrace a path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>end</strong> (<em>Node</em>) – Begin the backtracing here. Must in <cite>prev</cite>.</p></li>
+<li><p><strong>prev</strong> (<em>dict</em><em>[</em><em>Node</em><em>, </em><em>list</em><em>[</em><em>Node</em><em>]</em><em>]</em>) – A map from the current node to a list of
+the anchestors of that node.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>end</cite> is not in <cite>prev</cite>.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of paths that end at <cite>end</cite>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[list[Node]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="aoc.graph.reduce_edges">
 <span class="sig-prename descclassname"><span class="pre">aoc.graph.</span></span><span class="sig-name descname"><span class="pre">reduce_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">irreducible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/aoc/graph.html#reduce_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#aoc.graph.reduce_edges" title="Permalink to this definition">#</a></dt>
 <dd><p>Reduce a graph by repeatedly removing nodes with only two neighbours and adding
@@ -603,8 +627,8 @@ neighbours, giving tuples containing the neighbour and the weight of the
 edge to that neighbour.</p></li>
 <li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>, </em><em>float</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – A function that is called at
 every iteration with the current node and the true shortest path distance to
-that node. If this function returns <cite>True</cite>, the algorithm will stop.
-Otherwise, the algorithm will continue.</p></li>
+that node. If this function returns <cite>True</cite>, the algorithm will stop. If
+this function returns <cite>False</cite> or <cite>None</cite>, the algorithm will continue.</p></li>
 <li><p><strong>heuristic</strong> (<em>Callable</em><em>[</em><em>[</em><em>Node</em><em>]</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – An heuristic that needs to lower
 bounds the distance to the end node. It should also be monotonic, meaning
 that it never decreases by more than the edge weight. If it is not

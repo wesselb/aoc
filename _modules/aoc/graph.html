@@ -334,7 +334,7 @@ document.write(`
     <span class="n">TypeVar</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;shortest_path&quot;</span><span class="p">,</span> <span class="s2">&quot;reduce_edges&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;shortest_path&quot;</span><span class="p">,</span> <span class="s2">&quot;backtrace&quot;</span><span class="p">,</span> <span class="s2">&quot;reduce_edges&quot;</span><span class="p">]</span>
 
 
 <span class="n">Node</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Node&quot;</span><span class="p">)</span>
@@ -363,8 +363,8 @@ document.write(`
 <span class="sd">            edge to that neighbour.</span>
 <span class="sd">        callback (Callable[[Node, float], bool], optional): A function that is called at</span>
 <span class="sd">            every iteration with the current node and the true shortest path distance to</span>
-<span class="sd">            that node. If this function returns `True`, the algorithm will stop.</span>
-<span class="sd">            Otherwise, the algorithm will continue.</span>
+<span class="sd">            that node. If this function returns `True`, the algorithm will stop. If</span>
+<span class="sd">            this function returns `False` or `None`, the algorithm will continue.</span>
 <span class="sd">        heuristic (Callable[[Node], float], optional): An heuristic that needs to lower</span>
 <span class="sd">            bounds the distance to the end node. It should also be monotonic, meaning</span>
 <span class="sd">            that it never decreases by more than the edge weight. If it is not</span>
@@ -422,7 +422,8 @@ document.write(`
     <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
         <span class="n">d1</span><span class="p">,</span> <span class="n">n1</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 
-        <span class="c1"># This needs to execute first to ensure that `d1` is right.</span>
+        <span class="c1"># This needs to execute first to ensure that `d1` is right. `n1` might have</span>
+        <span class="c1"># been queued multiple times.</span>
         <span class="k">if</span> <span class="n">n1</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
             <span class="k">continue</span>
 
@@ -451,6 +452,40 @@ document.write(`
                 <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="n">n2</span><span class="p">]</span> <span class="o">+</span> <span class="n">heuristic</span><span class="p">(</span><span class="n">n2</span><span class="p">),</span> <span class="n">n2</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">prev</span></div>
+
+
+<div class="viewcode-block" id="backtrace"><a class="viewcode-back" href="../../graph.html#aoc.graph.backtrace">[docs]</a><span class="k">def</span> <span class="nf">backtrace</span><span class="p">(</span><span class="n">end</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">prev</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Backtrace a path.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        end (Node): Begin the backtracing here. Must in `prev`.</span>
+<span class="sd">        prev (dict[Node, list[Node]]): A map from the current node to a list of</span>
+<span class="sd">            the anchestors of that node.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If `end` is not in `prev`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[list[Node]]]: A list of paths that end at `end`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">end</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Backtracing must start at a reachable node.&quot;</span><span class="p">)</span>
+
+    <span class="n">finished_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">stack</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">end</span><span class="p">]]</span>
+    <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="n">new_stack</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">prev</span><span class="p">[</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+                    <span class="n">new_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="n">n</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">finished_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">new_stack</span>
+
+    <span class="c1"># Let the paths end at `end`.</span>
+    <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">path</span><span class="p">))</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">finished_paths</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="reduce_edges"><a class="viewcode-back" href="../../graph.html#aoc.graph.reduce_edges">[docs]</a><span class="k">def</span> <span class="nf">reduce_edges</span><span class="p">(</span>
