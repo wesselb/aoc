@@ -28,17 +28,11 @@ dist, prev = aoc.shortest_path(start, aoc.neighbours(board, allowed={".", "E"}))
 
 print("Distance:", dist[end])
 
-# Mark a shortest path with `P`, but not marking the start and end.
-n = end
-while True:
-    n = prev[n][0]
-    if n == start: 
-        break
-    else:
-        board[n] = "P"
+# Find a shortest path and mark it with `P`.
+path = aoc.backtrace(end, prev)[0]
 
 print()
-aoc.print_board(board)
+aoc.print_board(board, marks={"P": path})
 ```
 
 Output:
@@ -46,10 +40,10 @@ Output:
 ```text
 Distance: 11
 
-SPPP..
+PPPP..
 .##P.#
 .#PP..
 .#P###
-.#PPPE
+.#PPPP
 ```
 

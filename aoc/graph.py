@@ -11,7 +11,7 @@ from typing import (
     TypeVar,
 )
 
-__all__ = ["shortest_path", "reduce_edges"]
+__all__ = ["shortest_path", "backtrace", "reduce_edges"]
 
 
 Node = TypeVar("Node")
@@ -40,8 +40,8 @@ def shortest_path(
             edge to that neighbour.
         callback (Callable[[Node, float], bool], optional): A function that is called at
             every iteration with the current node and the true shortest path distance to
-            that node. If this function returns `True`, the algorithm will stop.
-            Otherwise, the algorithm will continue.
+            that node. If this function returns `True`, the algorithm will stop. If
+            this function returns `False` or `None`, the algorithm will continue.
         heuristic (Callable[[Node], float], optional): An heuristic that needs to lower
             bounds the distance to the end node. It should also be monotonic, meaning
             that it never decreases by more than the edge weight. If it is not
@@ -99,7 +99,8 @@ def shortest_path(
     while q:
         d1, n1 = heapq.heappop(q)
 
-        # This needs to execute first to ensure that `d1` is right.
+        # This needs to execute first to ensure that `d1` is right. `n1` might have
+        # been queued multiple times.
         if n1 in seen:
             continue
 
@@ -128,6 +129,40 @@ def shortest_path(
                 heapq.heappush(q, (dist[n2] + heuristic(n2), n2))
 
     return dist, prev
+
+
+def backtrace(end: Node, prev: Dict[Node, List[Node]]) -> List[List[Node]]:
+    """Backtrace a path.
+
+    Args:
+        end (Node): Begin the backtracing here. Must in `prev`.
+        prev (dict[Node, list[Node]]): A map from the current node to a list of
+            the anchestors of that node.
+
+    Raises:
+        ValueError: If `end` is not in `prev`.
+
+    Returns:
+        list[list[Node]]]: A list of paths that end at `end`.
+    """
+    if end not in prev:
+        raise ValueError("Backtracing must start at a reachable node.")
+
+    finished_paths: List[List[Node]] = []
+
+    stack: List[List[Node]] = [[end]]
+    while stack:
+        new_stack: List[List[Node]] = []
+        for path in stack:
+            if path[-1] in prev:
+                for n in prev[path[-1]]:
+                    new_stack.append(path + [n])
+            else:
+                finished_paths.append(path)
+        stack = new_stack
+
+    # Let the paths end at `end`.
+    return [list(reversed(path)) for path in finished_paths]
 
 
 def reduce_edges(
