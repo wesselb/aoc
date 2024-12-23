@@ -2,6 +2,7 @@ import heapq
 from typing import (
     Callable,
     Dict,
+    Generator,
     Iterable,
     Iterator,
     List,
@@ -11,7 +12,12 @@ from typing import (
     TypeVar,
 )
 
-__all__ = ["shortest_path", "backtrace", "reduce_edges"]
+__all__ = [
+    "shortest_path",
+    "backtrace",
+    "reduce_edges",
+    "cliques",
+]
 
 
 Node = TypeVar("Node")
@@ -214,3 +220,61 @@ def reduce_edges(
             break
 
     return set(edges), lambda n: edges[n]
+
+
+def cliques(
+    graph: Dict[Node, Set[Node]],
+    maximal: bool = True,
+) -> Generator[Set[Node], None, None]:
+    """Find all cliques in a graph.
+
+    This is the Bron–Kerbosch algorithm. Optimisations like pivoting or more
+    optimally iterating over the candiates are possible.
+
+    Args:
+        graph (dict[Node, set[Node]]): Graph.
+        maximal (bool, optional): Find only maximal cliques. Defaults to `True`.
+
+    Yields
+        set[Node]: Clique.
+    """
+    yield from _cliques(set(), set(graph.keys()), set(), graph, maximal)
+
+
+def _cliques(
+    clique: Set[Node],
+    connected_candidates: Set[Node],
+    connected_excluded: Set[Node],
+    graph: Dict[Node, Set[Node]],
+    maximal: bool,
+) -> Generator[Set[Node], None, None]:
+    connected_candidates = set(connected_candidates)
+    connected_excluded = set(connected_excluded)
+
+    if maximal:
+        # If there are no candidates left, the search ends. If there is no
+        # connected node that's excluded, then the clique is maximal.
+        if not connected_candidates and not connected_excluded:
+            yield clique
+            return
+    else:
+        yield clique
+
+    for n in list(connected_candidates):
+        # Generate all clique extension include `n`.
+        yield from _cliques(
+            clique | {n},
+            connected_candidates & graph[n],
+            connected_excluded & graph[n],
+            graph,
+            maximal,
+        )
+
+        # Any future extensions will not include `n`. Move `n` from the
+        # connected candidates to the connected exclusions. We need to keep
+        # track of which nodes are excluded, because `n` might be connected
+        # to all of `clique`, in which case `clique` is not maximal. However,
+        # `clique` might become maximal by adding another node connected to all
+        # of `clique`.
+        connected_candidates.remove(n)
+        connected_excluded.add(n)
