@@ -18,6 +18,8 @@ __all__ = [
     "turn_right",
     "turn_left",
     "neighbours_boundary",
+    "dir_to_char",
+    "char_to_dir",
 ]
 
 Node = Tuple[int, int]
@@ -269,3 +271,13 @@ def neighbours_boundary(
                     yield b2, 1
 
     return _neighbours
+
+
+dir_to_char: Dict[Tuple[int, int], str] = {
+    (-1, 0): "^",
+    (0, 1): ">",
+    (1, 0): "v",
+    (0, -1): "<",
+}
+
+char_to_dir: Dict[str, Tuple[int, int]] = {v: k for k, v in dir_to_char.items()}
