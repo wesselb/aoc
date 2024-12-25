@@ -248,6 +248,11 @@ def _cliques(
     graph: Dict[Node, Set[Node]],
     maximal: bool,
 ) -> Generator[Set[Node], None, None]:
+    # `connected_candidates` and `connected_excluded` are all nodes which are
+    # connected to all of `clique`. We move nodes between these two sets instead of just
+    # removing them from `connected_candidates`, because, to determine maximality,
+    # it is important to know which nodes are connected but not in the `clique`. We
+    # will mutate these sets, so copy them here.
     connected_candidates = set(connected_candidates)
     connected_excluded = set(connected_excluded)
 
@@ -270,11 +275,6 @@ def _cliques(
             maximal,
         )
 
-        # Any future extensions will not include `n`. Move `n` from the
-        # connected candidates to the connected exclusions. We need to keep
-        # track of which nodes are excluded, because `n` might be connected
-        # to all of `clique`, in which case `clique` is not maximal. However,
-        # `clique` might become maximal by adding another node connected to all
-        # of `clique`.
+        # Any future extensions will not include `n`, so exclude it.
         connected_candidates.remove(n)
         connected_excluded.add(n)
