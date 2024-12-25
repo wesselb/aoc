@@ -571,6 +571,11 @@ document.write(`
     <span class="n">graph</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]],</span>
     <span class="n">maximal</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+    <span class="c1"># `connected_candidates` and `connected_excluded` are all nodes which are</span>
+    <span class="c1"># connected to all of `clique`. We move nodes between these two sets instead of just</span>
+    <span class="c1"># removing them from `connected_candidates`, because, to determine maximality,</span>
+    <span class="c1"># it is important to know which nodes are connected but not in the `clique`. We</span>
+    <span class="c1"># will mutate these sets, so copy them here.</span>
     <span class="n">connected_candidates</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">connected_candidates</span><span class="p">)</span>
     <span class="n">connected_excluded</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">connected_excluded</span><span class="p">)</span>
 
@@ -593,12 +598,7 @@ document.write(`
             <span class="n">maximal</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Any future extensions will not include `n`. Move `n` from the</span>
-        <span class="c1"># connected candidates to the connected exclusions. We need to keep</span>
-        <span class="c1"># track of which nodes are excluded, because `n` might be connected</span>
-        <span class="c1"># to all of `clique`, in which case `clique` is not maximal. However,</span>
-        <span class="c1"># `clique` might become maximal by adding another node connected to all</span>
-        <span class="c1"># of `clique`.</span>
+        <span class="c1"># Any future extensions will not include `n`, so exclude it.</span>
         <span class="n">connected_candidates</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="n">connected_excluded</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
