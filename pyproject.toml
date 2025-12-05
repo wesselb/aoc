@@ -28,7 +28,7 @@ dev = [
     "wheel",
     "build",
     "tox",
-    "jupyter-book",
+    "jupyter-book<2",
     "mypy",
     "pyright",
 ]
