@@ -229,7 +229,7 @@ def cliques(
     """Find all cliques in a graph.
 
     This is the Bron–Kerbosch algorithm. Optimisations like pivoting or more
-    optimally iterating over the candiates are possible.
+    optimally iterating over the candidates are possible.
 
     Args:
         graph (dict[Node, set[Node]]): Graph.
