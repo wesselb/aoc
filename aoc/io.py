@@ -9,20 +9,31 @@ __all__ = [
 ]
 
 
-def read_lines(file_name: str) -> List[str]:
+def read_lines(file_name: str, *, strip: bool = True) -> List[str]:
     """Read all lines form a file, properly dealing with newline characters and
     possible additional whitespace.
 
     Args:
         file_name (str): File name.
+        strip (bool): Strip whitespace at the beginning and end of the line and at the
+            beginning and end of every line.
 
     Returns:
-        list[str]:
-            All lines in `file_name` without any empty lines at the beginning,
-            empty lines at the end, or newline characters.
+        list[str]: All lines in `file_name` without newline characters and possibly
+            also without whitespace.
     """
     with open(file_name, "r") as f:
-        return [line.strip() for line in f.read().strip().splitlines()]
+        content = f.read()
+
+    if strip:
+        content = content.strip()
+
+    lines = [line.replace("\n", "") for line in content.splitlines()]
+
+    if strip:
+        lines = [line.strip() for line in lines]
+
+    return lines
 
 
 def parse_board(lines: List[str]) -> Tuple[int, int, Dict[Tuple[int, int], str]]:
