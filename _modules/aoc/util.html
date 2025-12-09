@@ -339,6 +339,7 @@ document.write(`
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;first&quot;</span><span class="p">,</span>
     <span class="s2">&quot;only&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sign&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
@@ -381,6 +382,26 @@ document.write(`
     <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
         <span class="k">pass</span>  <span class="c1"># This is what we want!</span>
     <span class="k">return</span> <span class="n">x</span></div>
+
+
+
+<div class="viewcode-block" id="sign">
+<a class="viewcode-back" href="../../util.html#aoc.util.sign">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sign</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the sign of a number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (float): Number.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: Sign of `x`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
 
 </pre></div>
 
