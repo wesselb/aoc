@@ -3,6 +3,7 @@ from typing import Iterable, TypeVar
 __all__ = [
     "first",
     "only",
+    "sign",
 ]
 
 T = TypeVar("T")
@@ -40,3 +41,20 @@ def only(xs: Iterable[T]) -> T:
     except StopIteration:
         pass  # This is what we want!
     return x
+
+
+def sign(x: float) -> int:
+    """Find the sign of a number.
+
+    Args:
+        x (float): Number.
+
+    Returns:
+        int: Sign of `x`.
+    """
+    if x == 0:
+        return 0
+    elif x > 0:
+        return 1
+    else:
+        return -1

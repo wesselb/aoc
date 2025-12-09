@@ -29,6 +29,7 @@ BoardValue = TypeVar("BoardValue")
 def print_board(
     board: Dict[Node, str],
     marks: Optional[Dict[str, Iterable[Node]]] = None,
+    transpose: bool = False,
 ) -> None:
     """Print a board.
 
@@ -36,6 +37,10 @@ def print_board(
         board (dict[Node, str]): Board to visualise.
         marks (dict[str, Iterable[Node]], optional): Draw markers at particular nodes.
     """
+    if transpose:
+        board = {(c, r): v for (r, c), v in board.items()}
+        if marks:
+            marks = {m: [(c, r) for (r, c) in marks] for m, marks in marks.items()}
     min_r = min(r for r, _ in board.keys())
     max_r = max(r for r, _ in board.keys())
     min_c = min(c for _, c in board.keys())
