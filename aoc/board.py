@@ -8,6 +8,7 @@ from typing import (
     Set,
     Tuple,
     TypeVar,
+    Union,
 )
 
 from .graph import shortest_path
@@ -307,7 +308,7 @@ def neighbours_boundary(
 
 
 def find_boundary(
-    region: Set[Node] | Dict[Node, str],
+    region: Union[Set[Node], Dict[Node, str]],
 ) -> Tuple[frozenset[Node], frozenset[Node]]:
     """Find the inner and outer boundary of a region on a board.
 
