@@ -1,5 +1,7 @@
 from typing import Callable, Dict, Tuple
 
+import pytest
+
 import aoc
 
 turn_right: Dict[Tuple[int, int], Tuple[int, int]] = {
@@ -21,7 +23,19 @@ def test_turn_left() -> None:
         assert aoc.turn_left(dr, dc) == turn_left[dr, dc]
 
 
-def test_neighbours_boundary(write_file: Callable[[str, str], str]) -> None:
+@pytest.mark.parametrize(
+    "start",
+    [
+        ((3, 0), (3, 1)),
+        ((1, 2), (1, 3)),
+    ],
+)
+@pytest.mark.parametrize("walk_thin_corners", [False, True])
+def test_neighbours_boundary(
+    write_file: Callable[[str, str], str],
+    start: Tuple[Tuple[int, int], Tuple[int, int]],
+    walk_thin_corners: bool,
+) -> None:
     _, _, board = aoc.read_board(
         aoc.read_lines(
             write_file(
@@ -39,12 +53,14 @@ def test_neighbours_boundary(write_file: Callable[[str, str], str]) -> None:
     )
 
     region, _ = aoc.shortest_path((0, 0), aoc.neighbours(board, allowed={"A"}))
-    nbs = aoc.neighbours_boundary(lambda n: n in region)
+    nbs = aoc.neighbours_boundary(
+        lambda n: n in region,
+        walk_thin_corners=walk_thin_corners,
+    )
 
     ins = set()
     outs = set()
 
-    start = ((3, 0), (3, 1))
     prev, current = None, start
     while True:
         ins.add(current[0])
@@ -65,22 +81,41 @@ def test_neighbours_boundary(write_file: Callable[[str, str], str]) -> None:
     for n in outs:
         board[n] = "o"
 
-    _, _, target_board = aoc.read_board(
-        aoc.read_lines(
-            write_file(
-                "output.txt",
-                """
+    if not walk_thin_corners:
+        content = """
+            AAAiiA
+            AAiooi
+            Aiiooi
+            iooiiA
+            iooiAA
+            AiiAAA
+            """
+    else:
+        if start[0][0] == 1:
+            content = """
                 AAAiiA
                 AAiooi
-                Aiiooi
-                iooiiA
+                AAiooi
+                ABBiiA
+                ABBAAA
+                AAAAAA
+                """
+        else:
+            content = """
+                AAAAAA
+                AAABBA
+                AiiBBA
+                iooiAA
                 iooiAA
                 AiiAAA
-                """,
-            )
-        )
+                """
+    _, _, target_board = aoc.read_board(
+        aoc.read_lines(write_file("output.txt", content))
     )
 
+    print("Computed:")
     aoc.print_board(board)
+    print("Target:")
+    aoc.print_board(target_board)
 
     assert board == target_board
