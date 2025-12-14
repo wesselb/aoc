@@ -346,6 +346,8 @@ document.write(`
     <span class="n">TypeVar</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">shortest_path</span>
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;print_board&quot;</span><span class="p">,</span>
     <span class="s2">&quot;visualise_board&quot;</span><span class="p">,</span>
@@ -379,6 +381,7 @@ document.write(`
         <span class="n">board</span> <span class="o">=</span> <span class="p">{(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="k">if</span> <span class="n">marks</span><span class="p">:</span>
             <span class="n">marks</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:</span> <span class="p">[(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="n">marks</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">marks</span> <span class="ow">in</span> <span class="n">marks</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
     <span class="n">min_r</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">max_r</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">min_c</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -530,7 +533,7 @@ document.write(`
 <div class="viewcode-block" id="neighbours_boundary">
 <a class="viewcode-back" href="../../graph.html#aoc.board.neighbours_boundary">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">neighbours_boundary</span><span class="p">(</span>
-    <span class="n">in_region</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">in_region</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">walk_thin_corners</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">BoundaryPoint</span><span class="p">],</span> <span class="n">Generator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BoundaryPoint</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct a function that finds all neighbouring boundary points.</span>
 
@@ -540,7 +543,7 @@ document.write(`
 
 <span class="sd">    The algorithm to find all neighbouring boundary points works as follows. First,</span>
 <span class="sd">    the boundary is moved orthogonally to the normal vector. This amounts to an</span>
-<span class="sd">    _extension_ of the boundary. Second, the lgorithm explores all possible _folds_.</span>
+<span class="sd">    _extension_ of the boundary. Second, the algorithm explores all possible _folds_.</span>
 <span class="sd">    These are generated by fixing either the first or second node, and rotating</span>
 <span class="sd">    the non-fixed node around the fixed node by 90 degrees in any direction. During</span>
 <span class="sd">    the rotation, one node must remain inside the region, to ensure that we don&#39;t</span>
@@ -553,6 +556,8 @@ document.write(`
 <span class="sd">    Args:</span>
 <span class="sd">        in_region (Callable[[Node], bool], optional): A function that checks whether</span>
 <span class="sd">            a node is in the region of the boundary.</span>
+<span class="sd">        walk_thin_corners (bool, optional): If set to `True`, then the algorithm</span>
+<span class="sd">            may leave the region while rotating 90 degrees.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Callable[[BoundaryPoint], Generator[tuple[BoundaryPoint, One], None, None]]:</span>
@@ -609,10 +614,24 @@ document.write(`
             <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">b2</span><span class="p">):</span>
                 <span class="c1"># If this coordinate is not in the region, then the middle point must</span>
                 <span class="c1"># also be in the boundary. Otherwise, we might leave the boundary and</span>
-                <span class="c1"># come back. This is not an issue if this coordinate is in the region.</span>
+                <span class="c1"># come back. If we are walking thin corners, then this is allowd.</span>
                 <span class="k">if</span> <span class="n">in_region</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in1</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">bm</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">walk_thin_corners</span><span class="p">:</span>
                         <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">bm</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+
+                <span class="c1"># If the coordinate is in the region, then we do not need to check the</span>
+                <span class="c1"># middle point. However, if we are walking thin corners, then a similar</span>
+                <span class="c1"># situation occurs, so then we do need to check.</span>
+                <span class="k">elif</span> <span class="n">in_region</span> <span class="ow">and</span> <span class="n">in1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">walk_thin_corners</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">bm</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
 
@@ -623,13 +642,57 @@ document.write(`
             <span class="n">b2</span> <span class="o">=</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="n">dr2</span><span class="p">,</span> <span class="n">c2</span> <span class="o">+</span> <span class="n">dc2</span><span class="p">),</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">c2</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">b2</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">in_region</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in2</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">bm</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">walk_thin_corners</span><span class="p">:</span>
+                        <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">bm</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">in_region</span> <span class="ow">and</span> <span class="n">in2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">walk_thin_corners</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">in_boundary</span><span class="p">(</span><span class="n">bm</span><span class="p">):</span>
+                            <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
                         <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">b2</span><span class="p">,</span> <span class="mi">1</span>
 
     <span class="k">return</span> <span class="n">_neighbours</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_boundary</span><span class="p">(</span>
+    <span class="n">region</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">frozenset</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the inner and outer boundary of a region on a board.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        region (set[Node] or dict[Node, str]): Region, which is a collection of nodes</span>
+<span class="sd">            on a board.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[set[Node], set[Node]]:</span>
+<span class="sd">            A tuple containing respectively the inner boundary and outer boundary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">region</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Board must have at least one node.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Find one coordinate inside and one coordinate outside.</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">region</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">region</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">inside</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">outside</span> <span class="o">=</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span>
+
+    <span class="c1"># Walk the boundary.</span>
+    <span class="n">nbs</span> <span class="o">=</span> <span class="n">neighbours_boundary</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">region</span><span class="p">)</span>
+    <span class="n">boundary</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">shortest_path</span><span class="p">((</span><span class="n">inside</span><span class="p">,</span> <span class="n">outside</span><span class="p">),</span> <span class="n">nbs</span><span class="p">)</span>
+
+    <span class="c1"># Isolate the inner and outer boundary.</span>
+    <span class="n">inner</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">n_in</span> <span class="k">for</span> <span class="n">n_in</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">)</span>
+    <span class="n">outer</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">n_out</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">n_out</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inner</span><span class="p">,</span> <span class="n">outer</span>
 
 
 <span class="n">dir_to_char</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
