@@ -12,7 +12,7 @@ license = {text="MIT"}
 readme = "README.md"
 dynamic = ["version"]
 
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
@@ -61,7 +61,7 @@ testpaths = [
 
 [tool.black]
 line-length = 88
-target-version = ["py38", "py39"]
+target-version = ["py10"]
 include = '\.pyi?$'
 exclude = '''
 /(
