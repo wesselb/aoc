@@ -344,6 +344,7 @@ document.write(`
     <span class="n">Set</span><span class="p">,</span>
     <span class="n">Tuple</span><span class="p">,</span>
     <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">shortest_path</span>
@@ -661,7 +662,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">find_boundary</span><span class="p">(</span>
-    <span class="n">region</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">region</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">frozenset</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">Node</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the inner and outer boundary of a region on a board.</span>
 
